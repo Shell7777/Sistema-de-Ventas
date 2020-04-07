@@ -1,0 +1,41 @@
+﻿@model WebApplication3.Models.Clases.Usuario
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+<form action="/Usuario/Create" method="post">
+    <div class="form-group">
+        <label>Nombre</label>
+        <input class="form-control" name="nombre" value="@Model.nombre" />
+        <span class="text-danger">@Html.ValidationMessage("nombre")</span>
+
+    </div>
+   
+    direccion <input name="direccion" value="@Model.direccion" />
+    <span>@Html.ValidationMessage("direccion")</span>
+    email  <input name="email" value="@Model.email" />
+    <span>@Html.ValidationMessage("email")</span>
+    num_documento<input name="num_documento" value="@Model.num_documento" />
+    <span>@Html.ValidationMessage("num_documento")</span>
+    tipo_documento<input name="tipo_documento" value="@Model.tipo_documento" />
+    <span>@Html.ValidationMessage("tipo_documento")</span>
+    telefono<input name="telefono" value="@Model.telefono" />
+    <span>@Html.ValidationMessage("telefono")</span>
+    @*password_hash<input name="password_hash" value="@Model.password_hash" />
+    <span>@Html.ValidationMessage("password_hash")</span>
+    password_halt<input name="password_salt" value="@Model.password_salt" />
+    <span>@Html.ValidationMessage("password_Salt")</span>*@
+    <select name="idrol">
+        @foreach (var item in ViewBag.rol)
+        {
+            <option value="@item.id">@item.nombre</option>
+        }
+    </select>
+    <span>@Html.ValidationMessage("idrol")</span>
+
+
+    <button>Enviar</button>
+</form>
+

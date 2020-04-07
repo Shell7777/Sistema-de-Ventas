@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<form action="/Persona/Create" method="post">
+    nombre <input name="nombre" />
+    tipo de persona
+    <select name="tipo_persona">
+        <option value="proveedor">Proveedor</option>
+        <option value="cliente">Cliente</option>
+    </select>
+    tipo de documento
+    <select name="tipo_documento">
+        <option value="dni">DNI</option>
+        <option value="passport">Pasaporte</option>
+    </select>
+    numero de documento
+    <input name="num_documento" />
+    direccion <input name="direccion" />
+    telefono<input name="telefono" />
+    email<input name="email" />
+
+    <button>Enviar</button>
+
+
+
+</form>
+
