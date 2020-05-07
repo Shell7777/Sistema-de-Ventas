@@ -37,5 +37,13 @@ namespace WebApplication3.Controllers
         
             
         }
+        public ActionResult Delete(int? id) {
+            if (id == null) RedirectToAction("Index");
+            int a;
+            context.Rol.Remove(context.Rol.Find(id));
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        
+        }
     }
 }
