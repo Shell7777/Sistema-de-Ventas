@@ -14,13 +14,13 @@ namespace WebApplication3.Models.Clases
         public string serie_comprobante { get; set; }
         public string num_comprobante { get; set; } 
         public DateTime fecha_hora { get; set; }
-        public decimal impuesto { get; set; }
-        public decimal total { get; set; }
+        public decimal? impuesto { get; set; }
+        public decimal? total { get; set; }
         public string estado { get; set; }
 
 
         public List<Detalle_Venta> detalle_venta{ get; set; }
-        public Persona Proveedor { get; set; }
+        public Persona Cliente { get; set; }
         public Usuario Usuario { get; set; }
     }
 }

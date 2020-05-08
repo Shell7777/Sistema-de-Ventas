@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<h2>Lista de Productos Disponibles</h2>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -29,58 +29,109 @@
     </tbody>
 </table>
 <div style="background-color:teal; width:100px" ;height ="100px"></div>
+<hr />
+<h2>Lista de Productos a comprar </h2>
 <form action="/Venta/Create" method="post">
     <label>Ingrese El usuario</label>
-    <select name="idusuario">
+    <select name="idusuario" class="form-control">
+        <option>-----------</option>
         @foreach (var item in ViewBag.usuario)
         {
             <option value="@item.id">@item.nombre</option>
         }
     </select>
-    
+
     <label>Ingrese El Cliente</label>
-    <select name="idcliente">
+    <select name="idcliente" class="form-control">
+        <option>-----------</option>
         @foreach (var item in ViewBag.cliente)
         {
             <option value="@item.id">@item.nombre</option>
         }
     </select>
-    <div id="request-store-products" >
-        
 
+    <label>Ingrese El Tipo de comprobante </label>
+    <select name="tipo_comprobante" class="form-control">
+        <option>-----------</option>
+        <option value="RUC">RUC</option>
+        <option value="DNI">DNI</option>
+    </select>
+    <div class="form-group">
+        <label>Numero de comprobante</label>
+        <input type="text" name="num_comprobante" class="form-control" placeholder="Numero de comprobante">
     </div>
-    <button class="btn btn-success" name="enviar">Enviar</button>
+    <div class="alert alert-secondary">
+        <div id="request-store-products" class="container ">
+
+            <label>Usted no agrego nada </label>
+        </div>
+        <button class="btn btn-primary  btn-lg btn-block" name="enviar">Enviar</button>
+    </div>
+
+
 </form>
 
 
 <script>
+
     let products = []
 
     function add_Div(products) {
         console.log(products)
         let valorHtml = "";
-        
         for (let item=0; item < products.length ; item++) {
             console.log(item)
-            valorHtml += `<div class="alert alert-success">${products[item].nombre}
-            <a href="#" data-item=${item} onclick="sum_count(${products[item].id})" class="sum_count btn btn-success">+</a>
-            <span>${products[item].cantidad}<span>
-            <a href="#" data-item=${item} class="rest_count btn btn-warning">-</a>
-            <a href="#" data-item=${item}class="quit btn btn-danger">QUITARL</a>
-            <input hidden class="form-control" name="store_list[${item}].idarticulo" value="${products[item].id}" />
-            <input hidden class="form-control" name="store_list[${item}].nombre" value="${products[item].nombre}" />
-        <hr>Descuento
-            <input  class="form-control" name="store_list[${item}].descuento"  />
+            valorHtml += `
+            <div class="alert alert-primary row ">
+                <div class="col col-8">
+                    <span>${products[item].nombre}</span>  
+                </div>   
+                <div class="col col-2">
+                    <a class="btn btn btn-primary" onclick="add_productos_of_List(${item})" > + </a>
+                    <label>${products[item].cantidad}</label>
+                    <a class="btn btn btn-secondary text-white onclick="substrackting_productos_of_List(${item})"> - </a>        
+                    </div>
+                <div class="col col-2">
+                    <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
+                    <input hidden name="detalle_venta[${item}].idarticulo" value="${products[item].id}" />
+                    <input hidden name="detalle_venta[${item}].cantidad" value="${products[item].cantidad}" />
+                </div>
             </div>`
-            
+                
         }
 
         $("#request-store-products").html(valorHtml)
-        //$("#request-store-products").html(valorHtml)
+        
 
     }
-   
-       function verificar(id,name,max_count) {
+    function substrackting_productos_of_List(numero_de_orden_del_array) {
+        products[numero_de_orden_del_array].cantidad > 0
+            ? products[numero_de_orden_del_array].cantidad -= 1
+            : products[numero_de_orden_del_array].cantidad = 0
+
+        add_Div(products);
+
+    }
+    function add_productos_of_List(numero_de_orden_del_array) {
+        $.ajax(
+            {
+                url: `/Venta/ReturnStock_Product?id=${products[numero_de_orden_del_array].id}`,
+            }).done(function (stockDelServidorProducto) {
+
+
+                if (parseInt(stockDelServidorProducto) > products[numero_de_orden_del_array].cantidad) {
+                    products[numero_de_orden_del_array].cantidad++;
+                    add_Div(products);
+                }
+
+            }).fail(function (e) { alert("error"+e) })
+         
+    }
+    function delete_productos_of_List(numero_de_orden_del_array) {
+        products.splice(numero_de_orden_del_array, 1);
+        add_Div(products);
+    }
+    function verificar(id,name,max_count) {
             var existe = false
             for (let item of products) {
                 if (id == item.id) {
@@ -100,7 +151,7 @@
             
 
         }
-       $(".add").click(function () {
+    $(".add").click(function () {
             let nombre = ($(this).attr("data-nombre"))
             let id = $(this).attr("id")
             let stock = $(this).attr("data-stock")
@@ -108,11 +159,6 @@
             add_Div(products)
           })
 
-    function sum_count(id) {
-        alert(id)
-
-        verificar(id,"" , "")
-    }
-
 </script>
+
 
