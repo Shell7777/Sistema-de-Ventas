@@ -22,25 +22,25 @@ namespace WebApplication3.Controllers
             ViewBag.cliente = context.Personas.ToList();
 
 
-            return View(context.Articulos.Include(a=>a.categoria).ToList());
+            return View(context.Articulos.Include(a=>a.categoria).Where(a=>a.condicion==true).ToList());
 
         }
         public ActionResult AgregarArticulo(int id) {
             var articulo = context.Articulos.FirstOrDefault(o => o.id == id);
             return PartialView(articulo);
         }
-        //public string viewDateArticulo(int? id) {
-        //    if (id != null) {
-        //        context.Articulos.Find(id);
-        //    }
-        
-        //}
         [HttpPost]
         public ActionResult Create(List<Detalle_Venta> store_list,Venta store)
         {
 
-
             return RedirectToAction("Index");
+        }
+        public int?  ReturnStock_Product(int? id ) {
+            if (id != null) {
+                var isProductFind = context.Articulos.Find(id);
+                return isProductFind.stock;  
+            }
+            return null;
         }
     }
 }
