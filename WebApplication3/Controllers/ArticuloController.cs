@@ -15,12 +15,12 @@ namespace WebApplication3.Controllers
         Context context = Context.GetContext();
         public ActionResult Index()
         {
-            return View(context.Articulos.Include(a=>a.categoria).ToList());
+            return View(context.Articulos.Include(a => a.categoria).ToList());
         }
         [HttpGet]
         public ActionResult Create() {
             ViewBag.categoria = context.Categorias.ToList();
-            return View(new Articulo());   
+            return View(new Articulo());
         }
         [HttpPost]
         public ActionResult Create(Articulo articulo) {
@@ -31,16 +31,15 @@ namespace WebApplication3.Controllers
             }
             ViewBag.categoria = context.Categorias.ToList();
             return View(articulo);
-
         }
         [HttpGet]
-        public ActionResult Edit(int? id ) {
-            if (id!=null) {
+        public ActionResult Edit(int? id) {
+            if (id != null) {
                 ViewBag.cateoria = context.Categorias.ToList();
                 return View(context.Articulos.Include(a => a.categoria).Where(a => a.id == id));
             }
             return RedirectToAction("Index");
-        } 
+        }
         [HttpPost]
         public ActionResult Edit(Articulo articulo)
         {
@@ -51,12 +50,31 @@ namespace WebApplication3.Controllers
             }
             ViewBag.cateoria = context.Categorias.ToList();
             return View(articulo);
-            
+
         }
         public ActionResult Delete(int? id) {
-            if (id != null) context.Articulos.Remove(context.Articulos.Find(id));
+            if (id != null) {
+                var product_desbled = context.Articulos.Find(id);
+                product_desbled.condicion = false;
+            }
             context.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public string Drop(int? id ) {
+            if (id != null) {
+                try
+                {
+                    context.Articulos.Remove(context.Articulos.Find(id));
+                    context.SaveChanges();
+                    return ("El producto fue borrado exitosamente");
+                }
+                catch (Exception e) {
+                    return e.Message;
+                }
+                
+            }
+            return "Valor no Valido";
+            
         }
     }
 }
