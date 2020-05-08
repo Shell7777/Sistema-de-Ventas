@@ -33,20 +33,33 @@
 <h2>Lista de Productos a comprar </h2>
 <form action="/Venta/Create" method="post">
     <label>Ingrese El usuario</label>
-    <select name="idusuario">
+    <select name="idusuario" class="form-control">
+        <option>-----------</option>
         @foreach (var item in ViewBag.usuario)
         {
             <option value="@item.id">@item.nombre</option>
         }
     </select>
-    
+
     <label>Ingrese El Cliente</label>
-    <select name="idcliente">
+    <select name="idcliente" class="form-control">
+        <option>-----------</option>
         @foreach (var item in ViewBag.cliente)
         {
             <option value="@item.id">@item.nombre</option>
         }
     </select>
+
+    <label>Ingrese El Tipo de comprobante </label>
+    <select name="tipo_comprobante" class="form-control">
+        <option>-----------</option>
+        <option value="RUC">RUC</option>
+        <option value="DNI">DNI</option>
+    </select>
+    <div class="form-group">
+        <label>Numero de comprobante</label>
+        <input type="text" name="num_comprobante" class="form-control" placeholder="Numero de comprobante">
+    </div>
     <div class="alert alert-secondary">
         <div id="request-store-products" class="container ">
 
@@ -54,8 +67,8 @@
         </div>
         <button class="btn btn-primary  btn-lg btn-block" name="enviar">Enviar</button>
     </div>
-    
-   
+
+
 </form>
 
 
@@ -68,19 +81,22 @@
         let valorHtml = "";
         for (let item=0; item < products.length ; item++) {
             console.log(item)
-            valorHtml += `<div class="alert alert-primary row ">
-                             <div class="col col-8">
-                                <span>${products[item].nombre}</span>  
-                             </div>   
-                             <div class="col col-2">
-                               <a class="btn btn btn-primary" onclick="add_productos_of_List         (${item})" > + </a>
-                                <label>${products[item].cantidad}</label>
-                                <a class="btn btn btn-secondary text-white"         onclick="substrackting_productos_of_List(${item})"> - </a>        
-                             </div>
-                             <div class="col col-2">
-                                <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
-                            </div>
-                          </div>`
+            valorHtml += `
+            <div class="alert alert-primary row ">
+                <div class="col col-8">
+                    <span>${products[item].nombre}</span>  
+                </div>   
+                <div class="col col-2">
+                    <a class="btn btn btn-primary" onclick="add_productos_of_List(${item})" > + </a>
+                    <label>${products[item].cantidad}</label>
+                    <a class="btn btn btn-secondary text-white onclick="substrackting_productos_of_List(${item})"> - </a>        
+                    </div>
+                <div class="col col-2">
+                    <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
+                    <input hidden name="detalle_venta[${item}].idarticulo" value="${products[item].id}" />
+                    <input hidden name="detalle_venta[${item}].cantidad" value="${products[item].cantidad}" />
+                </div>
+            </div>`
                 
         }
 
@@ -101,8 +117,7 @@
             {
                 url: `/Venta/ReturnStock_Product?id=${products[numero_de_orden_del_array].id}`,
             }).done(function (stockDelServidorProducto) {
-                console.log(stockDelServidorProducto)
-                console.log(products[numero_de_orden_del_array].id)
+
 
                 if (parseInt(stockDelServidorProducto) > products[numero_de_orden_del_array].cantidad) {
                     products[numero_de_orden_del_array].cantidad++;

@@ -30,8 +30,22 @@ namespace WebApplication3.Controllers
             return PartialView(articulo);
         }
         [HttpPost]
-        public ActionResult Create(List<Detalle_Venta> store_list,Venta store)
+        public ActionResult Create(Venta store)
         {
+            //validaciones 
+            store.total = 0m;
+            foreach (var detalle in store.detalle_venta) {
+                detalle.precio = context.Articulos.Find(detalle.idarticulo).precio_venta * detalle.cantidad ;
+                detalle.descuento = 0;
+                store.total += detalle.precio; 
+            }
+            store.impuesto = store.total * 0.18m;
+            store.fecha_hora = DateTime.Now;
+            store.estado = "Exitoso";
+
+            context.ventas.Add(store);
+            context.SaveChanges();
+
 
             return RedirectToAction("Index");
         }
@@ -42,5 +56,6 @@ namespace WebApplication3.Controllers
             }
             return null;
         }
+
     }
 }
