@@ -170,6 +170,7 @@
     <Compile Include="Models\Clases\Venta.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicio\Service.cs" />
     <Compile Include="Sources\Validations\mValidaciones.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +289,7 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Sources\Icons\icon-soporte.png" />
+    <Content Include="Views\Articulo\Search_art.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -326,6 +328,8 @@
     <Content Include="Views\Venta\AgregarArticulo.cshtml" />
     <Content Include="Views\Ingreso\addCountArticulo.cshtml" />
     <Content Include="Views\Ingreso\Index.cshtml" />
+    <Content Include="Views\Categoria\Create.cshtml" />
+    <Content Include="Views\Categoria\Editar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

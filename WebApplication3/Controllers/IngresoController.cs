@@ -17,11 +17,18 @@ namespace WebApplication3.Controllers
 
         public JsonResult searchProduct(string query) {
 
-            if (String.IsNullOrEmpty(query)) return Json(context.Articulos.ToList(),JsonRequestBehavior.AllowGet);
+            if (String.IsNullOrEmpty(query)) 
+            { 
+                return Json(context.Articulos.ToList(), JsonRequestBehavior.AllowGet); 
+            }
             var findProducts = context.Articulos.Where(a => a.nombre.Contains(query));
             ViewBag.consulta = query;
             return Json(findProducts, JsonRequestBehavior.AllowGet);
-        }  
+        }
+        public int productCount() {
+            var asd = context.Articulos.ToList();
+            return asd.Count();
+        }
         public ActionResult Index()
         {
             return View(context.Articulos.ToList());
