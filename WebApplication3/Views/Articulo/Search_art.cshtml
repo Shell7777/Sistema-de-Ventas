@@ -13,28 +13,18 @@
 <table class="table">
     <tr>
         <th>Categoria</th>
-        <th>@Html.DisplayNameFor(model => model.codigo)</th>
-        <th>@Html.DisplayNameFor(model => model.nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.precio_venta)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.stock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.condicion)
-        </th>
+        <th>Codigo</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Estado</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.idcategoria)
+            @Html.DisplayFor(modelItem => item.categoria.nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.codigo)
@@ -49,15 +39,18 @@
             @Html.DisplayFor(modelItem => item.stock)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.descripcion)
+
+            <div class="custom-control custom-checkbox">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input disabled type="checkbox" @(item.condicion ? "checked" : "") value="true" aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+            </div>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.condicion)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Desactivar", "Delete", new { id=item.id })
+            <a class="btn btn-primary" href="/Categoria/Edit?id=@item.id">Detalles</a>
+
         </td>
     </tr>
 }

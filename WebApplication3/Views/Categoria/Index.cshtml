@@ -7,17 +7,11 @@
 }
 <h2>Categorias </h2>
 
-<p>
-    @Html.ActionLink("Crear una nueva categoria", "Create")
-</p>
 <table class="table">
 
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.descripcion)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.condicion)
@@ -35,9 +29,6 @@
         }
     <td>
         @Html.DisplayFor(modelItem => item.nombre)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.descripcion)
     </td>
     <td>
         

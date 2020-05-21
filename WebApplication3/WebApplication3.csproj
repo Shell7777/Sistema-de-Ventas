@@ -337,6 +337,8 @@
     <Content Include="Views\Login\IniciarSession.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Articulo\Edit.cshtml" />
+    <Content Include="Views\Categoria\Edit.cshtml" />
+    <Content Include="Views\Categoria\SearchCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

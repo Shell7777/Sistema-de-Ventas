@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication3.Models.Clases.Categoria>
+
+@{
+    ViewBag.Title = "Search_art";
+}
+
+<h2>Search_art</h2>
+<form action="/Categoria/SearchCategory">
+    <input name="query" type="text" value="@ViewBag.query " placeholder="Ingrese un nombre" class="form-control-lg" />
+    <button class="btn btn-primary">Enviar</button>
+</form>
+<hr />
+<table class="table">
+    <tr>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.nombre)</td>
+        <td>
+            <div class="custom-control custom-checkbox">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input disabled type="checkbox" @(item.condicion ? "checked" : "") value="true" aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <a class="btn btn-danger" href="/Categoria/Edit?id=@item.id">Detalles</a>
+        </td>
+    </tr>
+}
+
+</table>

@@ -47,12 +47,13 @@
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <div class="input-group-text">
-                <input type="checkbox" @(Model.condicion?"checked":"")  name="condicion" value="true" aria-label="Checkbox for following text input">
+                <input type="checkbox" @(Model.condicion ? "checked" : "") name="condicion" value="true" aria-label="Checkbox for following text input">
             </div>
         </div>
         <input type="text" class="form-control" disabled value="Estado" aria-label="Text input with checkbox">
     </div>
-   
+
     <br />
     <button class="btn btn-primary mb-lg-2">Enviar</button>
+    <a href="/Articulo/Index" class="btn btn-danger mb-lg-2">Cancelar</a>
 </form>

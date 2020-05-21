@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -23,12 +24,16 @@ namespace WebApplication3.Controllers
         }
         [HttpPost]
         public ActionResult Create(Categoria categoriaView) {
-            if (mValidaciones.Validar_Categoria(categoriaView).IsValid) {
-                context.Categorias.Add(categoriaView);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(categoriaView);
+            context.Categorias.Add(categoriaView);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+
+            /* if (mValidaciones.Validar_Categoria(categoriaView).IsValid) {
+                 context.Categorias.Add(categoriaView);
+                 context.SaveChanges();
+                 return RedirectToAction("Index");
+             }
+             return View(categoriaView);*/
         }
         [HttpGet]
         public ActionResult Edit(int? id ) {
@@ -50,6 +55,12 @@ namespace WebApplication3.Controllers
             }
             return View(categoria);*/
 
+        }
+        public ActionResult SearchCategory(string query) {
+            if (String.IsNullOrEmpty(query)) return View(new List<Categoria>());
+            var results = context.Categorias.Where(a => a.nombre.Equals(query)).ToList();
+            ViewBag.query = query;
+            return View(results);
         }
         [HttpGet]
         public ActionResult Delete(int? id) {
