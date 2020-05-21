@@ -45,26 +45,33 @@ namespace WebApplication3.Controllers
         public ActionResult Edit(int? id) {
             if (id != null) {
                 ViewBag.cateoria = context.Categorias.ToList();
-                return View(context.Articulos.Include(a => a.categoria).Where(a => a.id == id));
+                return View(context.Articulos.Include(a => a.categoria).Where(a => a.id == id).First());
             }
             return RedirectToAction("Index");
         }
         [HttpPost]
         public ActionResult Edit(Articulo articulo)
         {
-            if (mValidaciones.Validar_Articulo(articulo).IsValid) {
-                context.Entry(articulo).State = EntityState.Modified;
+            //if (mValidaciones.Validar_Articulo(articulo).IsValid) {
+                var articuloBD = context.Articulos.Find(articulo.id);
+                articuloBD.nombre = articulo.nombre;
+                articuloBD.codigo = articulo.codigo;
+                articuloBD.precio_venta= articulo.precio_venta;
+                articuloBD.descripcion = articulo.descripcion;
+                articuloBD.condicion = articulo.condicion;
+
+                //context.Entry(articulo).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
-            }
-            ViewBag.cateoria = context.Categorias.ToList();
-            return View(articulo);
+            //}
+            //ViewBag.cateoria = context.Categorias.ToList();
+            //return View(articulo);
 
         }
         public ActionResult Delete(int? id) {
             if (id != null) {
                 var product_desbled = context.Articulos.Find(id);
-                product_desbled.condicion = false;
+                product_desbled.condicion = !product_desbled.condicion;
             }
             context.SaveChanges();
             return RedirectToAction("Index");

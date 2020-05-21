@@ -7,7 +7,7 @@ namespace WebApplication3.Models.Clases
 {
     public class Articulo
     {
-        public int id { get; set; }
+        public int? id{ get; set; }
         public int? idcategoria { get; set; }
         public string codigo { get; set; }
         public string nombre{ get; set; }

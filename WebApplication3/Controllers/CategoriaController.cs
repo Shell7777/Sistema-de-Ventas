@@ -38,15 +38,25 @@ namespace WebApplication3.Controllers
         }
         [HttpPost]
         public ActionResult Edit(Categoria categoria) {
-            if (mValidaciones.Validar_Categoria(categoria).IsValid) {
+            var categoriaBD = context.Categorias.Find(categoria.id);
+            categoriaBD.descripcion = categoria.descripcion;
+            categoriaBD.condicion = categoria.condicion;
+            context.SaveChanges();
+            return RedirectToAction("Index");
+            /*if (mValidaciones.Validar_Categoria(categoria).IsValid) {
                 context.Entry(categoria).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(categoria);
- 
+            return View(categoria);*/
+
         }
-
-
+        [HttpGet]
+        public ActionResult Delete(int? id) {
+            if (id == null) return RedirectToAction("Index");
+            var valor = context.Categorias.Find(id);
+            valor.condicion = !valor.condicion;
+            return RedirectToAction("Index");
+        }
     }
 }

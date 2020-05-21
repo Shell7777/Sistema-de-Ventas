@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Articulos";
+    string mensaje = "";
+    string claseBtn = "btn btn-info";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,8 +21,13 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
 <tr>
+    @{ 
+        mensaje = !item.condicion ? "Activar Producto ":"Desactiva Prodcuto";
+        claseBtn = !item.condicion ? "btn btn-info" : "btn btn-warning";
+    }
     <td>
         @Html.DisplayFor(modelItem => item.codigo)
     </td>
@@ -38,12 +45,17 @@
         @Html.DisplayFor(modelItem => item.categoria.nombre)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.condicion)
+        <div class="custom-control custom-checkbox">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input disabled type="checkbox" @(item.condicion ? "checked" : "") value="true" aria-label="Checkbox for following text input">
+                </div>
+            </div>
+        </div>
     </td>
     <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.id }) |
-        @Html.ActionLink("Desactivar Producto", "Delete", new { id = item.id })
+        <a class="btn btn-danger" href="/Articulo/Edit?id=@item.id">Editar</a>|
+        <a class="@claseBtn" href="/Articulo/Delete?id=@item.id">@mensaje</a>
     </td>
 </tr>
 }
