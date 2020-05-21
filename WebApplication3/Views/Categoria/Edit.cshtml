@@ -1,29 +1,34 @@
 ﻿@model WebApplication3.Models.Clases.Categoria
 
-@{
-    ViewBag.Title = "Crear";
-}
 
-<h2>Crear una categoria </h2>
-<form action="/Categoria/Create?id=@Model.id" method="post">
+<h2>Editar una categoria </h2>
 
-    <div class="form-group">
-        <label>Nombre</label>
-        <input class="form-control" name="nombre" value=@Model.nombre/>
-        <span>@Html.ValidationMessage("nombre")</span>
+<div class="row">
+
+    <div class="col form-group">
+        <label>Id</label>
+        <p>@Model.id</p>
     </div>
+    <div class="col form-group">
+        <label>Nombre</label>
+        <p>@Model.nombre</p>
+    </div>
+</div>
+<br />
+<p style="color:red">*recuerda que no puede modificar el nombre para eso tendras que crear una nueva categoria.</p>
+
+<form action="/Categoria/Edit?id=@Model.id" method="post">
 
     <div class="form-group">
         <label>Descripción</label>
-        <textarea rows="5" class="form-control" name="descripcion">@Model.descripcion</textarea>
-        <span>@Html.ValidationMessage("descripcion")</span>
+        <textarea class="form-control" name="descripcion">@Model.descripcion</textarea>
+
     </div>
-    
+
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <div class="input-group-text">
                 <input type="checkbox" @(Model.condicion ? "checked" : "") name="condicion" value="true" aria-label="Checkbox for following text input">
-                
             </div>
         </div>
         <input type="text" class="form-control" disabled value="Estado" aria-label="Text input with checkbox">
@@ -31,6 +36,6 @@
 
     <br />
     <button class="btn btn-primary mb-lg-2">Enviar</button>
+
     <a href="/Categoria/Index" class="btn btn-danger mb-lg-2">Cancelar</a>
 </form>
-

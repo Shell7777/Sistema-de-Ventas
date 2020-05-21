@@ -2,20 +2,16 @@
 
 @{
     ViewBag.Title = "Index";
+    string mensaje = "";
+    string claseBtn = "btn btn-info";
 }
-
 <h2>Categorias </h2>
 
-<p>
-    @Html.ActionLink("Crear una nueva categoria", "Create")
-</p>
 <table class="table">
+
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.descripcion)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.condicion)
@@ -23,23 +19,32 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.condicion)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+
+        @{
+            mensaje = !item.condicion ? "Activar Producto " : "Desactiva Prodcuto";
+            claseBtn = !item.condicion ? "btn btn-info" : "btn btn-warning";
+        }
+    <td>
+        @Html.DisplayFor(modelItem => item.nombre)
+    </td>
+    <td>
+        
+        <div class="custom-control custom-checkbox">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <input disabled type="checkbox" @(item.condicion ? "checked" : "") value="true" aria-label="Checkbox for following text input">
+                </div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <a class="btn btn-danger" href="/Categoria/Edit?id=@item.id">Editar</a>|
+        <a class="@claseBtn" href="/Categoria/Delete?id=@item.id">@mensaje</a>
+    </td>
+</tr>
+    }
 
 </table>

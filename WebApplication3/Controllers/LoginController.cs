@@ -25,6 +25,7 @@ namespace WebApplication3.Controllers
             return RedirectToAction("Index");
             
         }
+        [Authorize]
         public ActionResult Index()
         {
             ViewBag.usuario = SessionInciada().nombre;
