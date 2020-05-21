@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication3.Models;
 using WebApplication3.Models.Clases;
+using WebApplication3.Servicio;
 using WebApplication3.Sources.Validations;
 
 namespace WebApplication3.Controllers
@@ -13,6 +14,14 @@ namespace WebApplication3.Controllers
     public class ArticuloController : Controller
     {
         Context context = Context.GetContext();
+        
+        private IService service;
+        public ArticuloController(){}
+        public ArticuloController(IService service)
+        {
+            this.service = service;
+        }
+
         public ActionResult Index()
         {
             return View(context.Articulos.Include(a => a.categoria).ToList());
@@ -76,5 +85,23 @@ namespace WebApplication3.Controllers
             return "Valor no Valido";
             
         }
+
+        public ActionResult Search_art(string query) {
+            if (String.IsNullOrEmpty(query)) return View(new List<Articulo>());
+            ViewBag.Query = query;
+            var listArticulos = context.Articulos
+                                    .Include(a=>a.categoria)
+                                    .Where(a => a.nombre.Equals(query))
+                                    .ToList();
+            
+            return View(listArticulos);
+        }
+
+        public ActionResult listUsers() {
+          // var service = new Service();
+            var usuarioList = service.articulosList();
+            return View(usuarioList);
+        }
+
     }
 }

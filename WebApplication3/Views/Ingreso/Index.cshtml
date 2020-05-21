@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WebApplication3.Models.Clases.Articulo>
+@{
+    ViewBag.Title = "Create";
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<input class="form-control" id="inputControl" onkeyup="onKeyInput()" type="text" />
+
+<table class="table table-hover">
+    <tr>
+        <th>ID</th>
+        <th>Codigo</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th></th>
+    </tr>
+    <tbody id="app"></tbody>
+</table>
+<script>
+
+
+    let productsList;
+    $(document).ready(onKeyInput())
+    function onKeyInput() {
+        let valor = document.getElementById("inputControl").value
+
+        $.ajax({ url: `/Ingreso/searchProduct?query=${valor}` })
+            .done(function (artiucloList) {
+                let artiuculo_html = ""
+                artiucloList.map(function (articulo) {
+                    artiuculo_html += `
+                    <tr>
+                        <td>${articulo.id}</td>
+                        <td>${articulo.codigo}</td>
+                        <td>${articulo.nombre}</td>
+                        <td>${articulo.precio_venta}</td>
+                        <td>${articulo.stock}</td>
+                        <td><button class="btn btn-primary" onclick="addCountProdut(${articulo.id})">Agregar</button></td>
+                    </tr>`
+                })
+                document.getElementById("app").innerHTML = artiuculo_html
+            })
+    }
+    function addCountProdut(idProducto) {
+        valorHtml += `
+            <div class="alert alert-primary row ">
+                <div class="col col-8">
+                    <span>${products[item].nombre}</span>  
+                </div>   
+                <div class="col col-2">
+                    <a class="btn btn btn-primary" onclick="add_productos_of_List(${item})" > + </a>
+                    <label>${products[item].cantidad}</label>
+                    <a class="btn btn btn-secondary text-white onclick="substrackting_productos_of_List(${item})"> - </a>        
+                    </div>
+                <div class="col col-2">
+                    <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
+                    <input hidden name="detalle_venta[${item}].idarticulo" value="${products[item].id}" />
+                    <input hidden name="detalle_venta[${item}].cantidad" value="${products[item].cantidad}" />
+                </div>
+            </div>`
+    } 
+
+</script>
