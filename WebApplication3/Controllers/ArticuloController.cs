@@ -7,45 +7,56 @@ using System.Web.Mvc;
 using WebApplication3.Models;
 using WebApplication3.Models.Clases;
 using WebApplication3.Servicio;
+using WebApplication3.Servicio.ServiceClass;
+using WebApplication3.Servicio.ServiceInterface;
 using WebApplication3.Sources.Validations;
 
 namespace WebApplication3.Controllers
 {
     public class ArticuloController : Controller
     {
-        Context context = Context.GetContext();
-        
-        private IService service;
-        public ArticuloController(){}
-        public ArticuloController(IService service)
+
+        private IServiceArticulo service;
+        private IServiceCategoria serviceCategoria;
+        public ArticuloController(){
+            service = new ArticuloService();
+            serviceCategoria = new CategoriaService();
+        }
+        public ArticuloController(IServiceArticulo service)
         {
             this.service = service;
+        }
+        public ArticuloController(IServiceArticulo service,IServiceCategoria serviceCategoria)
+        {
+            this.service = service;
+            this.serviceCategoria = serviceCategoria;
         }
 
         public ActionResult Index()
         {
-            return View(context.Articulos.Include(a => a.categoria).ToList());
+            return View(service.ArtsList());
         }
         [HttpGet]
         public ActionResult Create() {
-            ViewBag.categoria = context.Categorias.ToList();
+            ViewBag.categoria = service.ArtsListIncludeCategory();
             return View(new Articulo());
         }
         [HttpPost]
         public ActionResult Create(Articulo articulo) {
             if (mValidaciones.Validar_Articulo(articulo).IsValid) {
-                context.Articulos.Add(articulo);
-                context.SaveChanges();
+                service.ArtAdd(articulo);
+                service.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.categoria = context.Categorias.ToList();
+            ViewBag.categoria = serviceCategoria.CatsList();
             return View(articulo);
         }
         [HttpGet]
         public ActionResult Edit(int? id) {
             if (id != null) {
-                ViewBag.cateoria = context.Categorias.ToList();
-                return View(context.Articulos.Include(a => a.categoria).Where(a => a.id == id).First());
+                ViewBag.cateoria = serviceCategoria.CatsList();
+                var valor = service.ArtIncludeCategory(id);
+                return View(valor);
             }
             return RedirectToAction("Index");
         }
@@ -53,7 +64,7 @@ namespace WebApplication3.Controllers
         public ActionResult Edit(Articulo articulo)
         {
             //if (mValidaciones.Validar_Articulo(articulo).IsValid) {
-                var articuloBD = context.Articulos.Find(articulo.id);
+                var articuloBD = service.FindArt(articulo.id);
                 articuloBD.nombre = articulo.nombre;
                 articuloBD.codigo = articulo.codigo;
                 articuloBD.precio_venta= articulo.precio_venta;
@@ -61,27 +72,26 @@ namespace WebApplication3.Controllers
                 articuloBD.condicion = articulo.condicion;
 
                 //context.Entry(articulo).State = EntityState.Modified;
-                context.SaveChanges();
+                service.SaveChanges();
                 return RedirectToAction("Index");
             //}
-            //ViewBag.cateoria = context.Categorias.ToList();
+            //ViewBag.cateoria = serviceCategoria.CatsList();
             //return View(articulo);
 
         }
         public ActionResult Delete(int? id) {
             if (id != null) {
-                var product_desbled = context.Articulos.Find(id);
+                var product_desbled = service.FindArt(id);
                 product_desbled.condicion = !product_desbled.condicion;
             }
-            context.SaveChanges();
+            service.SaveChanges();
             return RedirectToAction("Index");
         }
         public string Drop(int? id ) {
             if (id != null) {
                 try
                 {
-                    context.Articulos.Remove(context.Articulos.Find(id));
-                    context.SaveChanges();
+                    service.ArtDrop(id);
                     return ("El producto fue borrado exitosamente");
                 }
                 catch (Exception e) {
@@ -94,19 +104,14 @@ namespace WebApplication3.Controllers
         }
 
         public ActionResult Search_art(string query) {
-            if (String.IsNullOrEmpty(query)) return View(new List<Articulo>());
-            ViewBag.Query = query;
-            var listArticulos = context.Articulos
-                                    .Include(a=>a.categoria)
-                                    .Where(a => a.nombre.Equals(query))
-                                    .ToList();
             
+            ViewBag.Query = query;
+            var listArticulos = service.ArtsListInlcudeCategoryEqualsName(query);
             return View(listArticulos);
         }
 
         public ActionResult listUsers() {
-          // var service = new Service();
-            var usuarioList = service.articulosList();
+            var usuarioList = service.ArtsList();
             return View(usuarioList);
         }
 

@@ -174,8 +174,12 @@
     <Compile Include="Models\Clases\Venta.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicio\ServiceClass\ArticuloService.cs" />
     <Compile Include="Servicio\Loggin\UserLogged.cs" />
     <Compile Include="Servicio\Service.cs" />
+    <Compile Include="Servicio\ServiceClass\CategoriaService.cs" />
+    <Compile Include="Servicio\ServiceInterface\IServiceArticulo.cs" />
+    <Compile Include="Servicio\ServiceInterface\IServiceCategoria.cs" />
     <Compile Include="Sources\Validations\mValidaciones.cs" />
   </ItemGroup>
   <ItemGroup>

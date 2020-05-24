@@ -2,74 +2,73 @@
 @{
     ViewBag.Title = "Create";
 }
-<h2>Lista de Productos Disponibles</h2>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <td>Nombre</td>
-            <td>Codigo</td>
-            <td>Categoria</td>
-            <td>Precio</td>
-            <td>Stock</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.nombre</td>
-                <td>@item.codigo</td>
-                <td>@item.categoria.nombre</td>
-                <td>@item.precio_venta</td>
-                <td>@item.stock</td>
-                <td><button id="@item.id" data-nombre="@item.nombre" data-stock="@item.stock" class="add btn btn-warning btn-block">Agregar </button></td>
+   
+<div class="row">
+    <div class="col">
 
-            </tr>
-        }
-    </tbody>
-</table>
+        <h2>Carrito</h2>
+        <form action="/Venta/Create" method="post">
+
+            <div class="alert alert-secondary">
+                <label>Usuario:</label>
+                <input hidden name="idcliente" value="5">Juanito Valdez</option>
+                <div class="row">
+                    <div class="col">
+                        <label>Comprobante </label>
+                        <select name="tipo_comprobante" class="form-control">
+                            <option>-----------</option>
+                            <option value="RUC">RUC</option>
+                            <option value="DNI">DNI</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Numero de comprobante</label>
+                            <input type="text" name="num_comprobante" class="form-control" placeholder="Numero de comprobante">
+                        </div>
+                    </div>
+                </div>
+                <div id="request-store-products" class="container ">
+
+                    <label>Usted no agrego nada </label>
+                </div>
+
+                <button class="btn btn-primary  btn-lg  " name="enviar">Enviar</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="col">
+
+        <h2>Lista de Productos</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Nombre</td>
+                    <td>Precio</td>
+                    <td>Stock</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.nombre</td>
+                        <td>@item.precio_venta</td>
+                        <td>@item.stock</td>
+                        <td><button id="@item.id" data-nombre="@item.nombre" data-stock="@item.stock" class="add btn btn-warning ">Agregar </button></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
 <div style="background-color:teal; width:100px" ;height ="100px"></div>
 <hr />
-<h2>Lista de Productos a comprar </h2>
-<form action="/Venta/Create" method="post">
-    <label>Ingrese El usuario</label>
-    <select name="idusuario" class="form-control">
-        <option>-----------</option>
-        @foreach (var item in ViewBag.usuario)
-        {
-            <option value="@item.id">@item.nombre</option>
-        }
-    </select>
-
-    <label>Ingrese El Cliente</label>
-    <select name="idcliente" class="form-control">
-        <option>-----------</option>
-        @foreach (var item in ViewBag.cliente)
-        {
-            <option value="@item.id">@item.nombre</option>
-        }
-    </select>
-
-    <label>Ingrese El Tipo de comprobante </label>
-    <select name="tipo_comprobante" class="form-control">
-        <option>-----------</option>
-        <option value="RUC">RUC</option>
-        <option value="DNI">DNI</option>
-    </select>
-    <div class="form-group">
-        <label>Numero de comprobante</label>
-        <input type="text" name="num_comprobante" class="form-control" placeholder="Numero de comprobante">
-    </div>
-    <div class="alert alert-secondary">
-        <div id="request-store-products" class="container ">
-
-            <label>Usted no agrego nada </label>
-        </div>
-        <button class="btn btn-primary  btn-lg btn-block" name="enviar">Enviar</button>
-    </div>
-
-
-</form>
 
 
 <script>
@@ -77,21 +76,21 @@
     let products = []
 
     function add_Div(products) {
-        console.log(products)
+        
         let valorHtml = "";
         for (let item=0; item < products.length ; item++) {
-            console.log(item)
+            
             valorHtml += `
             <div class="alert alert-primary row ">
-                <div class="col col-8">
+                <div class="col col-5">
                     <span>${products[item].nombre}</span>  
                 </div>   
-                <div class="col col-2">
+                <div class="col col-4">
                     <a class="btn btn btn-primary" onclick="add_productos_of_List(${item})" > + </a>
                     <label>${products[item].cantidad}</label>
-                    <a class="btn btn btn-secondary text-white onclick="substrackting_productos_of_List(${item})"> - </a>        
+                    <a class="btn btn btn-secondary text-white" onclick="substrackting_productos_of_List(${item})"> - </a>        
                     </div>
-                <div class="col col-2">
+                <div class="col col-3">
                     <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
                     <input hidden name="detalle_venta[${item}].idarticulo" value="${products[item].id}" />
                     <input hidden name="detalle_venta[${item}].cantidad" value="${products[item].cantidad}" />
@@ -113,19 +112,17 @@
 
     }
     function add_productos_of_List(numero_de_orden_del_array) {
-        $.ajax(
-            {
-                url: `/Venta/ReturnStock_Product?id=${products[numero_de_orden_del_array].id}`,
-            }).done(function (stockDelServidorProducto) {
-
-
+        let data = new FormData()
+        fetch(`/Venta/ReturnStock_Product?id=${products[numero_de_orden_del_array].id}`)
+            .then(function (response) {
+                return (response.text())
+            })
+            .then(function (stockDelServidorProducto) {
                 if (parseInt(stockDelServidorProducto) > products[numero_de_orden_del_array].cantidad) {
                     products[numero_de_orden_del_array].cantidad++;
                     add_Div(products);
                 }
-
-            }).fail(function (e) { alert("error"+e) })
-         
+            })       
     }
     function delete_productos_of_List(numero_de_orden_del_array) {
         products.splice(numero_de_orden_del_array, 1);
