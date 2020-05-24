@@ -6,7 +6,7 @@ using System.Web;
 using WebApplication3.Models;
 using WebApplication3.Models.Clases;
 
-namespace WebApplication3.Servicio
+namespace WebApplication3.Servicio.ServiceClass
 {
     public class Service:IService
     {
@@ -19,7 +19,8 @@ namespace WebApplication3.Servicio
             return context.Articulos.ToList();
         }
     }
-    public interface IService{
+    public interface IService
+    {
         List<Articulo> articulosList();
     }
 }
