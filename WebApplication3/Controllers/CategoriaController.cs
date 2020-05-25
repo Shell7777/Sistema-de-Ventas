@@ -17,6 +17,7 @@ namespace WebApplication3.Controllers
     public class CategoriaController : Controller
     {
         private IServiceCategoria service;
+
         public CategoriaController()
         {
             service = new CategoriaService();
