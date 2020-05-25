@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using WebApplication3.Models.Clases;
 
 namespace WebApplication3.Sources.Validations
 {
-    public static class mValidaciones 
+    public  class mValidaciones 
     {
         static Regex rx = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
 
@@ -83,13 +84,14 @@ namespace WebApplication3.Sources.Validations
             }
             return ModelState;
         }
-        public static ModelStateDictionary Validar_Categoria(Categoria categoria) {
+        public  ModelStateDictionary Validar_Categoria(Categoria categoria) {
+            
             ModelStateDictionary ModelState = new ModelStateDictionary();
             if (String.IsNullOrEmpty(categoria.nombre)) {
                 ModelState.AddModelError("nombre", "Ingrese un nombre");
             }
             if (String.IsNullOrEmpty(categoria.descripcion)) {
-                ModelState.AddModelError("nombre", "Ingrese un nombre");
+                ModelState.AddModelError("descripcion", "Ingrese una descripcion");
             }
             return ModelState;
 

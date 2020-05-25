@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using WebAplication3.Test.DataFake;
 using WebApplication3.Controllers;
 using WebApplication3.Models.Clases;
 using WebApplication3.Servicio;
+using WebApplication3.Servicio.ServiceInterface;
 
 namespace WebAplication3.Test.ControllerTest
 {
@@ -32,9 +34,16 @@ namespace WebAplication3.Test.ControllerTest
         }
 
         [Test]
+        public void Test_listArticulo()
+        {
+            var mock = new Mock<IServiceArticulo>();
+            mock.Setup(a => a.ArtsList()).Returns(new List<Articulo>());
+            var mcontroller = new ArticuloController(mock.Object);
+        }
+        [Test]
         public void Test_listUsers_1() {
-            var mcontroller = new ArticuloController(new ServiceFaker());
-            var view = mcontroller.listUsers();
+            var mcontroller = new ArticuloController(new FakeServiceArticulo());
+            var view = mcontroller.Delete(8);
             Assert.IsInstanceOf<ViewResult>(view);
 
         }
