@@ -42,27 +42,11 @@ namespace WebApplication3.Controllers
                 return RedirectToAction("Index");
             }
             return View(categoriaView);
-
-            /*mValidaciones validaciones = new mValidaciones();
-            ModelStateDictionary ModelState = validaciones.Validar_Categoria(categoriaView);
-            var valor = ModelState.Values;
-            string  l;
-            foreach(var item in valor){
-                l = item.Errors.First().ErrorMessage;
-            }
-             if (ModelState.IsValid) {
-                
-                service.CatAdd(categoriaView);
-                 service.SaveChanges();
-                 return RedirectToAction("Index");
-             }
-
-             return View(categoriaView);*/
         }
         [HttpGet]
         public ActionResult Edit(int? id ) {
             if (id != null) return View( service.CatFind(id));
-
+            
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -76,13 +60,6 @@ namespace WebApplication3.Controllers
                 service.SaveChanges();
             }
             return RedirectToAction("Index");
-            /*if (mValidaciones.Validar_Categoria(categoria).IsValid) {
-                context.Entry(categoria).State = EntityState.Modified;
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(categoria);*/
-
         }
         public ActionResult SearchCategory(string query) {
             ViewBag.query = query;

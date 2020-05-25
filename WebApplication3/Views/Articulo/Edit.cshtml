@@ -22,26 +22,30 @@
 </div>
 <br />
 <form action="/Articulo/Edit?id=@Model.id" method="post">
+    <input value="@Model.categoria.nombre" hidden name="Categoria.nombre" />
+    <input value="@Model.categoria.id" hidden name="Categoria.id" />
+    <input value="@Model.stock" hidden name="stock" />
+    <input value="@Model.idcategoria" hidden name="idcategoria" />
     <div class="form-group">
         <label>Nombre</label>
         <input type="text" name="nombre" class="form-control" value="@Model.nombre" />
-        <span>@Html.ValidationMessage("nombre")</span>
+        <span style="color:red">@Html.ValidationMessage("nombre")</span>
     </div>
     <div class="form-group">
         <label>Código</label>
         <input type="text" class="form-control" name="codigo" value="@Model.codigo" />
-        <span>@Html.ValidationMessage("codigo")</span>
+        <span style="color:red">@Html.ValidationMessage("codigo")</span>
     </div>
     <div class="form-group">
         <label>Precio de venta</label>
         <input type="text" class="form-control" name="precio_venta" value="@Model.precio_venta" />
-        <span>@Html.ValidationMessage("precioventa")</span>
+        <span style="color:red">@Html.ValidationMessage("precioventa")</span>
     </div>
 
     <div class="form-group">
         <label>Descripción</label>
         <textarea class="form-control" name="descripcion">@Model.descripcion</textarea>
-
+        <span style="color:red">@Html.ValidationMessage("descripcion")</span>
     </div>
 
     <div class="input-group mb-3">

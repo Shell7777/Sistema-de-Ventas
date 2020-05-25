@@ -63,20 +63,19 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public ActionResult Edit(Articulo articulo)
         {
-            //if (mValidaciones.Validar_Articulo(articulo).IsValid) {
+            validar_Edit(articulo);
+            if (ModelState.IsValid) {
                 var articuloBD = service.FindArt(articulo.id);
                 articuloBD.nombre = articulo.nombre;
                 articuloBD.codigo = articulo.codigo;
                 articuloBD.precio_venta= articulo.precio_venta;
                 articuloBD.descripcion = articulo.descripcion;
                 articuloBD.condicion = articulo.condicion;
-
                 //context.Entry(articulo).State = EntityState.Modified;
                 service.SaveChanges();
                 return RedirectToAction("Index");
-            //}
-            //ViewBag.cateoria = serviceCategoria.CatsList();
-            //return View(articulo);
+            }            
+            return View(articulo);
 
         }
         public ActionResult Delete(int? id) {
@@ -113,6 +112,34 @@ namespace WebApplication3.Controllers
             var usuarioList = service.ArtsList();
             return View(usuarioList);
         }
+        public void validar_Edit(Articulo articulo) {
+            if (string.IsNullOrEmpty(articulo.nombre))
+            {
+                ModelState.AddModelError("nombre", "*Ingrese nombre");
+            }
+            
+            if (string.IsNullOrEmpty(articulo.codigo))
+            {
+                ModelState.AddModelError("codigo", "*Ingrese un código válido ");
+            }
+            if (string.IsNullOrEmpty(articulo.descripcion))
+            {
+                ModelState.AddModelError("descripcion", "*Ingrese una descripción");
+            }
+            if (articulo.precio_venta == null || articulo.precio_venta < 0)
+            {
+                ModelState.AddModelError("precioventa", "*Ingrese una precio valido");
+            }
+            //if (articulo.stock == null || articulo.stock < 0)
+            //{
+            //    ModelState.AddModelError("codigo", "Ingrese un stock valido");
+            //}
+            //if (articulo.idcategoria == null || articulo.idcategoria < 0)
+            //{
+            //    ModelState.AddModelError("idcategoria", "Ingrese una categoria valida ");
+            //}
+        }
+        
 
     }
 }
