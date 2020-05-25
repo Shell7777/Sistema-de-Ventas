@@ -10,13 +10,13 @@
     <div class="form-group">
         <label>Nombre</label>
         <input class="form-control" name="nombre" value=@Model.nombre/>
-        <span>@Html.ValidationMessage("nombre")</span>
+        <span style="color:red">@Html.ValidationMessage("nombre")</span>
     </div>
 
     <div class="form-group">
         <label>Descripción</label>
         <textarea rows="5" class="form-control" name="descripcion">@Model.descripcion</textarea>
-        <span>@Html.ValidationMessage("descripcion")</span>
+        <span style="color:red">@Html.ValidationMessage("descripcion")</span>
     </div>
     
     <div class="input-group mb-3">

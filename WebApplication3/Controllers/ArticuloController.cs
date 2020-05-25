@@ -109,7 +109,6 @@ namespace WebApplication3.Controllers
             var listArticulos = service.ArtsListInlcudeCategoryEqualsName(query);
             return View(listArticulos);
         }
-
         public ActionResult listUsers() {
             var usuarioList = service.ArtsList();
             return View(usuarioList);
