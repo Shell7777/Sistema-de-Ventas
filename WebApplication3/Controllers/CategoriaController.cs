@@ -49,7 +49,7 @@ namespace WebApplication3.Controllers
             if (id != null) return View( service.CatFind(id));
             
             return RedirectToAction("Index");
-        }
+        }       
         [HttpPost]
         public ActionResult Edit(Categoria categoria) {
             validar_Edit(categoria);
@@ -59,8 +59,10 @@ namespace WebApplication3.Controllers
                 categoriaBD.descripcion = categoria.descripcion;
                 categoriaBD.condicion = categoria.condicion;
                 service.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View(categoria);
+                
         }
         public ActionResult SearchCategory(string query) {
             ViewBag.query = query;
@@ -72,6 +74,8 @@ namespace WebApplication3.Controllers
             if (id == null) return RedirectToAction("Index");
             var valor = service.CatFind(id);
             valor.condicion = !valor.condicion;
+            //service.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

@@ -51,31 +51,91 @@ namespace WebAplication3.Test.ControllerTest
             Assert.IsNotNull(view.Model);
         }
         [Test]
-        public void testEditNoSeaNullID() {
+        public void testEditNoSeaNullIDGet() {
+            //enviar un id null
             var mocky = new Mock<IServiceCategoria>();
             var controller = new CategoriaController(mocky.Object);
             int? valor = null;
             var view = (RedirectToRouteResult)controller.Edit(valor)  ;
-            Assert.IsInstanceOf<RedirectResult>(view);
-            Assert.AreEqual(view.RouteName , "Index");
+            Assert.IsInstanceOf<RedirectToRouteResult>(view);            
         }
         [Test]
-        public void testEditExitos() { 
+        public void testEditExitosGet() {
+            // Encontrar satisfactoriamente y regresa una vista con modelo
+            var categoriaPrueba = new Categoria();
+            var mocky = new Mock<IServiceCategoria>();
+            mocky.Setup(a => a.CatFind(8)).Returns(categoriaPrueba);
+            var controller = new CategoriaController(mocky.Object);
+            var view = (ViewResult)controller.Edit(8);
+            Assert.IsInstanceOf<ViewResult>(view);
+            Assert.IsNotNull(view.Model);
         }
         [Test]
-        public void testEditFallido()
+        public void testEditFallidoPost()
         {
+            //crear un categoria que falle 
+            var categoriaPrueba = new Categoria();
+            var mocky = new Mock<IServiceCategoria>();
+            var controller = new CategoriaController(mocky.Object);
+            var view = controller.Edit(categoriaPrueba) as ViewResult;
+            Assert.IsInstanceOf<ViewResult>(view);
+            Assert.IsNotNull(view.Model);
+            //Assert.AreEqual(view.ViewName,"Edit");
         }
-
         [Test]
-        public void testIDDeleteExitoso() { 
-        
-        }
-        [Test]
-        public void testIDDeleteFallido()
+        public void testEditExitosoPost()
         {
-
+            //crear un categoria que se guarde de forma exitosa 
+            var categoriaPrueba = new Categoria();
+            categoriaPrueba.descripcion = "lorem impsum lorem impsum lorem impsum";
+            categoriaPrueba.nombre = "Embutidos";
+            var mocky = new Mock<IServiceCategoria>();
+            mocky.Setup(a => a.CatFind(5)).Returns(categoriaPrueba);
+            mocky.Setup(a => a.SaveChanges());
+            var controller = new CategoriaController(mocky.Object);
+            var categoriaView = new Categoria();
+            categoriaView.id = 5;
+            categoriaView.nombre = "Lacteos";
+            categoriaView.descripcion = "leche de la vaca lola";
+            var view = controller.Edit(categoriaView) as RedirectToRouteResult;
+            Assert.IsInstanceOf<RedirectToRouteResult>(view);
+ 
         }
-
+        [Test]
+        public void testIDDeleteExitoso() {
+            var mocky = new Mock<IServiceCategoria>();
+            mocky.Setup(a => a.CatFind(5)).Returns(new Categoria { condicion = true});
+            var controller = new CategoriaController(mocky.Object);
+            var view = (RedirectToRouteResult)controller.Delete(5);
+            Assert.IsInstanceOf<RedirectToRouteResult>(view);
+        }
+        [Test]
+        public void testSearchIsWithNull()
+        {
+            var mocky = new Mock<IServiceCategoria>();
+            mocky.Setup(a => a.CatsListEqualsName(null))
+                    .Returns(new List<Categoria>());
+            var controller = new CategoriaController(mocky.Object);
+            var view = (ViewResult)controller.SearchCategory(null);
+            Assert.IsNull(view.ViewBag.query);
+            Assert.IsNotNull(view.Model);
+        }
+        [Test]
+        public void testSearchConNullQuery()
+        {
+            var listaCat = new List<Categoria>();
+            listaCat.Add(new Categoria());
+            listaCat.Add(new Categoria());
+            var mocky = new Mock<IServiceCategoria>();
+            mocky.Setup(a => a.CatsListEqualsName("Valor"))
+                    .Returns(listaCat);
+            var controller = new CategoriaController(mocky.Object);
+            var view = (ViewResult)controller.SearchCategory("Valor");
+            Assert.IsNotNull(view.ViewBag.query);
+            Assert.AreEqual(view.ViewBag.query,"Valor");
+            Assert.IsNotNull(view.Model);
+            var model = (List<Categoria>)view.Model;
+            Assert.AreEqual(model.Count,2);
+        }
     }
 }
