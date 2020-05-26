@@ -45,7 +45,6 @@ namespace WebAplication3.Test.ControllerTest
             var mcontroller = new ArticuloController(new FakeServiceArticulo());
             var view = mcontroller.Delete(8);
             Assert.IsInstanceOf<ViewResult>(view);
-
         }
     }
 }

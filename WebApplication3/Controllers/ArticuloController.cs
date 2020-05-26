@@ -86,6 +86,7 @@ namespace WebApplication3.Controllers
             service.SaveChanges();
             return RedirectToAction("Index");
         }
+
         public string Drop(int? id ) {
             if (id != null) {
                 try

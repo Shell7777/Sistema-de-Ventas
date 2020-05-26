@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerTest\ArticuloControllerTest.cs" />
     <Compile Include="ControllerTest\ArtiucloControllerTest.cs" />
     <Compile Include="ControllerTest\CategoriaContolletTest.cs" />
     <Compile Include="DataFake\FakeServiceArticulo.cs" />
