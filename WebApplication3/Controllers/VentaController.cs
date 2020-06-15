@@ -12,17 +12,36 @@ namespace WebApplication3.Controllers
     public class VentaController : Controller
     {
         Context context = Context.GetContext();
-        public ActionResult Index()
+        public ActionResult Index() {
+
+            return View(context.ventas.Include(a => a.Usuario).Include(a => a.Cliente).ToList());
+        }
+        [HttpGet]
+        public ActionResult search()
         {
-            return View(context.ventas.ToList());
+            ViewBag.fechaMaxima = DateTime.Today.ToString("yyyy-MM-dd");
+            return View();
+        }
+        [HttpPost]
+        public ActionResult search(DateTime dateQuery)
+        {
+            ViewBag.fechaMaxima = DateTime.Today.ToString("yyyy-MM-dd");
+            if (DateTime.Compare(dateQuery, ViewBag.fechaMaxima)>0 || dateQuery == null) {
+                ModelState.AddModelError("fecha", "*El valor ingresado no es valido");
+                return View(dateQuery);
+            }
+           // var valor = context.ventas.Where(a => a.fecha_hora.ToString("yyyy-MM-dd") == dateQuery).ToList();
+
+
+            return View();
         }
         [HttpGet]
         public ActionResult Create() {
             ViewBag.usuario = context.Usuarios.ToList();
             ViewBag.cliente = context.Personas.ToList();
 
-
-            return View(context.Articulos.Include(a=>a.categoria).Where(a=>a.condicion==true).ToList());
+            ViewBag.comprobante = "";
+            return View(context.Articulos.Include(a=>a.categoria).Where(a=>a.condicion==true && a.stock>0).ToList());
 
         }
         public ActionResult AgregarArticulo(int id) {
@@ -32,22 +51,43 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public ActionResult Create(Venta store)
         {
-            //validaciones 
-            store.total = 0m;
-            foreach (var detalle in store.detalle_venta) {
-                detalle.precio = context.Articulos.Find(detalle.idarticulo).precio_venta * detalle.cantidad ;
-                detalle.descuento = 0;
-                store.total += detalle.precio; 
+            validarVenta(store);
+            if (ModelState.IsValid)
+            {
+                store.total = 0m;
+                foreach (var detalle in store.detalle_venta)
+                {
+                    detalle.precio = context.Articulos.Find(detalle.idarticulo).precio_venta * detalle.cantidad;
+                    detalle.descuento = 0;
+                    store.total += detalle.precio;
+                }
+                store.impuesto = store.total * 0.18m;
+                store.fecha_hora = DateTime.Now;
+                store.estado = "Exitoso";
+                store.idcliente = 1;
+                store.idusuario = 1;
+                store.serie_comprobante = store.idusuario.ToString() + store.idcliente + "vent"+store.fecha_hora.ToString();
+                context.ventas.Add(store);
+                context.SaveChanges();
+                actualizaRegisrosProductosBD(store.detalle_venta);
+                return RedirectToAction("Index");
             }
-            store.impuesto = store.total * 0.18m;
-            store.fecha_hora = DateTime.Now;
-            store.estado = "Exitoso";
+            ViewBag.comprobante = store.tipo_comprobante;
+            ViewBag.numero = store.num_comprobante;
+            return View(context.Articulos.Include(a => a.categoria).Where(a => a.condicion == true).ToList());
 
-            context.ventas.Add(store);
+        }
+        public void actualizaRegisrosProductosBD(List<Detalle_Venta> productosComprados)
+        {
+            foreach (var productComprado in productosComprados)
+            {
+                var productoBD = context.Articulos.Find(productComprado.idarticulo);
+                if (productoBD.stock >= productComprado.cantidad  && productoBD.stock > 0) {
+                    productoBD.stock -= productComprado.cantidad;
+                }
+            }
             context.SaveChanges();
 
-
-            return RedirectToAction("Index");
         }
         public int?  ReturnStock_Product(int? id ) {
             if (id != null) {
@@ -56,6 +96,23 @@ namespace WebApplication3.Controllers
             }
             return null;
         }
+        public void validarVenta(Venta venta)
+        {
+            if (String.IsNullOrEmpty(venta.tipo_comprobante)) {
+                ModelState.AddModelError("tipo_comprobante", "Ingrese el tipo de comprobante");
+            }
+            if (String.IsNullOrEmpty(venta.num_comprobante))
+            {
+                ModelState.AddModelError("num_comprobante", "Ingrese el numero de comprobante");
+            }
+            if (venta.detalle_venta == null || venta.detalle_venta.Count == 0) {
 
+                ModelState.AddModelError("lista", "La lista está vacia");
+                
+            }
+            
+            //if (venta.idcliente == null) ModelState.AddModelError("cliente", "Registre un cliente");
+           // if (venta.Usuario == null) ModelState.AddModelError("usuario", "Registre un cliente");
+        }
     }
 }

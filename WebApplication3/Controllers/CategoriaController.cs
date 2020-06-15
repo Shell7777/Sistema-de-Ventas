@@ -37,7 +37,13 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public ActionResult Create(Categoria categoriaView) {
             validar_Create(categoriaView);
+            if (service.SiesUnico(categoriaView.nombre)) { 
+                ModelState.AddModelError("nombre", "*Ese nombre ya fue ingresado por favor elija otro");
+                HttpContext.Response.StatusCode = 422;
+            }
+           
             if (ModelState.IsValid) {
+                
                 service.CatAdd(categoriaView);
                 service.SaveChanges();
                 return RedirectToAction("Index");

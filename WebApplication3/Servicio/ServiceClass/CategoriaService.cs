@@ -33,10 +33,14 @@ namespace WebApplication3.Servicio.ServiceClass
                 context.Categorias.Remove(context.Categorias.Find(id));
             
         }
-
         public void SaveChanges()
         {
             context.SaveChanges();
+        }
+
+        public bool SiesUnico(string nombre )
+        {
+            return context.Categorias.Any(a => a.nombre == nombre);
         }
     }
 }

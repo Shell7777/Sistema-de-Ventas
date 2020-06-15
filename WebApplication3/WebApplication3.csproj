@@ -343,6 +343,7 @@
     <Content Include="Views\Articulo\Edit.cshtml" />
     <Content Include="Views\Categoria\Edit.cshtml" />
     <Content Include="Views\Categoria\SearchCategory.cshtml" />
+    <Content Include="Views\Venta\search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

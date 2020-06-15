@@ -6,57 +6,27 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.idcliente)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.idusuario)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tipo_comprobante)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.serie_comprobante)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.num_comprobante)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.fecha_hora)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.impuesto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.total)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.estado)
-        </th>
+        <th>Vendedor</th>
+        <th>Tipo</th>
+        <th>Cod serie</th>
+        <th>Fecha</th>
+        <th>IGV</th>
+        <th>Total</th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.idcliente)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.idusuario)
+            @Html.DisplayFor(modelItem => item.Usuario.nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.tipo_comprobante)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.serie_comprobante)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.num_comprobante)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.fecha_hora)
@@ -67,13 +37,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.total)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.estado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+       <td>
+          <a href="/Venta/Details?id?=@item.id">Ver lista de compra</a>
         </td>
     </tr>
 }

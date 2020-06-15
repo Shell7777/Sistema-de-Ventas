@@ -11,26 +11,29 @@
 
             <div class="alert alert-secondary">
                 <label>Usuario:</label>
-                <input hidden name="idcliente" value="5">Juanito Valdez</option>
+                <!--<input hidden name="idcliente" value="5">Juanito Valdez-->
                 <div class="row">
                     <div class="col">
                         <label>Comprobante </label>
                         <select name="tipo_comprobante" class="form-control">
-                            <option>-----------</option>
-                            <option value="RUC">RUC</option>
-                            <option value="DNI">DNI</option>
+                            <option value="">-----------</option>
+                            <option @(ViewBag.comprobante=="RUC"?"selected":"") value="RUC">RUC</option>
+                            <option @(ViewBag.comprobante=="DNI"?"selected":"") value="DNI">DNI</option>
                         </select>
+                        <label style="color:red">@Html.ValidationMessage("tipo_comprobante")</label>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label>Numero de comprobante</label>
-                            <input type="text" name="num_comprobante" class="form-control" placeholder="Numero de comprobante">
+                            <input type="text" name="num_comprobante" value="@ViewBag.numero" class="form-control" placeholder="Numero de comprobante">
+                            <label style="color:red">@Html.ValidationMessage("num_comprobante")</label>
                         </div>
                     </div>
                 </div>
                 <div id="request-store-products" class="container ">
-
                     <label>Usted no agrego nada </label>
+
+                    <label style="color:red">@Html.ValidationMessage("lista")</label>
                 </div>
 
                 <button class="btn btn-primary  btn-lg  " name="enviar">Enviar</button>
