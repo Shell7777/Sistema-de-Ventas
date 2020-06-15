@@ -17,5 +17,6 @@ namespace WebApplication3.Servicio.ServiceInterface
         Categoria CatFind(int? id);
         List<Categoria> CatsListEqualsName(string query);
         void CatDrop(int? id);
+        bool SiesUnico(string nombre );
     }
 }

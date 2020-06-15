@@ -37,7 +37,13 @@ namespace WebApplication3.Controllers
         [HttpPost]
         public ActionResult Create(Categoria categoriaView) {
             validar_Create(categoriaView);
+            if (service.SiesUnico(categoriaView.nombre)) { 
+                ModelState.AddModelError("nombre", "*Ese nombre ya fue ingresado por favor elija otro");
+                HttpContext.Response.StatusCode = 422;
+            }
+           
             if (ModelState.IsValid) {
+                
                 service.CatAdd(categoriaView);
                 service.SaveChanges();
                 return RedirectToAction("Index");
@@ -49,7 +55,7 @@ namespace WebApplication3.Controllers
             if (id != null) return View( service.CatFind(id));
             
             return RedirectToAction("Index");
-        }
+        }       
         [HttpPost]
         public ActionResult Edit(Categoria categoria) {
             validar_Edit(categoria);
@@ -59,8 +65,10 @@ namespace WebApplication3.Controllers
                 categoriaBD.descripcion = categoria.descripcion;
                 categoriaBD.condicion = categoria.condicion;
                 service.SaveChanges();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View(categoria);
+                
         }
         public ActionResult SearchCategory(string query) {
             ViewBag.query = query;
@@ -72,6 +80,8 @@ namespace WebApplication3.Controllers
             if (id == null) return RedirectToAction("Index");
             var valor = service.CatFind(id);
             valor.condicion = !valor.condicion;
+            //service.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

@@ -8,8 +8,8 @@ namespace WebApplication3.Models.Clases
     public class Venta
     {
         public int id { get; set; }
-        public int idcliente { get; set; }
-        public int idusuario { get; set; }
+        public int? idcliente { get; set; }
+        public int? idusuario { get; set; }
         public string tipo_comprobante { get; set; }
         public string serie_comprobante { get; set; }
         public string num_comprobante { get; set; } 
