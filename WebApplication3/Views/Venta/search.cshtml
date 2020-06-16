@@ -1,16 +1,36 @@
-﻿
+﻿@model List<WebApplication3.Models.Clases.Venta>
 @{
     ViewBag.Title = "search";
 
 }
-1979-12-31
-
 <form action="" method="post">
-    <input type="date" max="@ViewBag.fechaMaxima" value="@Model"  name="dateQuery" />
+
+    <input type="date" max="@ViewBag.fechaMaxima"  value="@ViewBag.dataquery" name="dateQuery" />
     <button>Enviar</button>
+    <span>@Html.ValidationMessage("fecha")</span>
 </form>
 <div id="app<<">
-
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Precio</th>
+                <th>Vendedor</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) { 
+            <tr>
+                <th>@item.fecha_hora</th>
+                <th>@item.total</th>
+                <th>@item.Usuario.nombre</th>
+                <th>@item.estado</th>
+                <th><a href="google.com">asd</a></th>
+            </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <h2>search</h2>
