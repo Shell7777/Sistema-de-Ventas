@@ -20,19 +20,31 @@ namespace WebApplication3.Controllers
         public ActionResult search()
         {
             ViewBag.fechaMaxima = DateTime.Today.ToString("yyyy-MM-dd");
-            return View();
+            return View(new List<Venta>());
+        }
+        void validaFecha(DateTime? dateQuery) {
+            if (dateQuery == null) ModelState.AddModelError("fecha", "*El valor ingresado no es valido");
+            else {
+                var dateConsulta = DateTime.Parse(dateQuery.ToString());
+                if (dateConsulta.CompareTo(DateTime.Today) > 0) ModelState.AddModelError("fecha", "*El valor ingresado no es valido");
+            }
+
         }
         [HttpPost]
-        public ActionResult search(DateTime dateQuery)
+        public ActionResult search(DateTime? dateQuery)
         {
             ViewBag.fechaMaxima = DateTime.Today.ToString("yyyy-MM-dd");
-            if (DateTime.Compare(dateQuery, ViewBag.fechaMaxima)>0 || dateQuery == null) {
-                ModelState.AddModelError("fecha", "*El valor ingresado no es valido");
-                return View(dateQuery);
+            validaFecha(dateQuery);
+            ViewBag.dataquery = (dateQuery != null)
+                    ? DateTime.Parse(dateQuery.ToString()).ToString("yyyy-MM-dd")
+                    : "";
+            if (ModelState.IsValid) {
+
+                var dateConsulta = DateTime.Parse(dateQuery.ToString());
+                var valor = dateConsulta.ToString("yyyy-MM-dd") as object;
+                var ventasList = context.ventas.Include(a=>a.Usuario).Where(a => a.fecha_hora.CompareTo(dateConsulta) < 0).ToList();
+                return View(ventasList);
             }
-           // var valor = context.ventas.Where(a => a.fecha_hora.ToString("yyyy-MM-dd") == dateQuery).ToList();
-
-
             return View();
         }
         [HttpGet]
@@ -70,7 +82,7 @@ namespace WebApplication3.Controllers
                 context.ventas.Add(store);
                 context.SaveChanges();
                 actualizaRegisrosProductosBD(store.detalle_venta);
-                return RedirectToAction("Index");
+                return RedirectToAction("search");
             }
             ViewBag.comprobante = store.tipo_comprobante;
             ViewBag.numero = store.num_comprobante;

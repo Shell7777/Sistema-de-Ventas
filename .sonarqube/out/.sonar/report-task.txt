@@ -1,0 +1,6 @@
+projectKey=Sistema_de_ventas_Elvis
+serverUrl=https://sonar.sky4dev.com
+serverVersion=6.7.6.38781
+dashboardUrl=https://sonar.sky4dev.com/dashboard/index/Sistema_de_ventas_Elvis
+ceTaskId=AXLo_1JsXRucFQKddmXy
+ceTaskUrl=https://sonar.sky4dev.com/api/ce/task?id=AXLo_1JsXRucFQKddmXy
