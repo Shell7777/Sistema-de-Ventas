@@ -7,44 +7,24 @@
 }
 <h2>Categorias </h2>
 
-<table class="table">
+<table class="table table-bordered table-responsive-xl">
 
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.condicion)
-        </th>
+    <tr tr class="bg-warning">
+        <th>Nombre</th>
+        <th>Estado</th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-    <tr>
-
-        @{
-            mensaje = !item.condicion ? "Activar Producto " : "Desactiva Prodcuto";
-            claseBtn = !item.condicion ? "btn btn-info" : "btn btn-warning";
-        }
-    <td>
-        @Html.DisplayFor(modelItem => item.nombre)
-    </td>
-    <td>
-        
-        <div class="custom-control custom-checkbox">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <input disabled type="checkbox" @(item.condicion ? "checked" : "") value="true" aria-label="Checkbox for following text input">
-                </div>
-            </div>
-        </div>
-    </td>
-    <td>
-        <a class="btn btn-danger" href="/Categoria/Edit?id=@item.id">Editar</a>|
-        <a class="@claseBtn" href="/Categoria/Delete?id=@item.id">@mensaje</a>
-    </td>
-</tr>
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.nombre)</td>
+            <td>@(item.condicion?"Activo":"Desactivado")</td>
+            <td>
+                <a  href="/Categoria/Edit?id=@item.id">Editar</a>|
+                <a  href="/Categoria/Delete?id=@item.id">@(!item.condicion?"Activar":"Desactivar")</a>
+            </td>
+        </tr>
     }
 
 </table>

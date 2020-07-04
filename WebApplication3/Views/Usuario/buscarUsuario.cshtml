@@ -1,21 +1,23 @@
-﻿@model IEnumerable<WebApplication3.Models.Clases.Persona>
+﻿@model IEnumerable<WebApplication3.Models.Clases.Usuario>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "buscarUsuario";
 }
 
-<h2>Lista de personas</h2>
+<h2>buscarUsuario</h2>
 
-<p>
-    @Html.ActionLink("Crear nueva persona", "Create")
-</p>
-<table class="table">
-    <tr>
+<form action="/Usuario/buscarUsuario">
+    <input type="text" name="nombre"/>
+    <button>Enviar</button>
+
+</form>
+<table class="table table-bordered table-responsive-xl">
+    <tr class="bg-warning">
         <th>
-            @Html.DisplayNameFor(model => model.nombre)
+            @Html.DisplayNameFor(model => model.idrol)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tipo_persona)
+            @Html.DisplayNameFor(model => model.nombre)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.tipo_documento)
@@ -32,16 +34,25 @@
         <th>
             @Html.DisplayNameFor(model => model.email)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password_hash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password_salt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.condicion)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.nombre)
+            @Html.DisplayFor(modelItem => item.idrol)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.tipo_persona)
+            @Html.DisplayFor(modelItem => item.nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.tipo_documento)
@@ -59,7 +70,17 @@
             @Html.DisplayFor(modelItem => item.email)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.password_hash)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.password_salt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.condicion)
+        </td>
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.id })
         </td>
     </tr>

@@ -71,7 +71,7 @@ namespace WebApplication3.Controllers
                 articuloBD.precio_venta= articulo.precio_venta;
                 articuloBD.descripcion = articulo.descripcion;
                 articuloBD.condicion = articulo.condicion;
-                //context.Entry(articulo).State = EntityState.Modified;
+              
                 service.SaveChanges();
                 return RedirectToAction("Index");
             }            

@@ -6,26 +6,52 @@
 <h2>Create</h2>
 
 <form action="/Persona/Create" method="post">
-    nombre <input name="nombre" />
-    tipo de persona
-    <select name="tipo_persona">
-        <option value="proveedor">Proveedor</option>
-        <option value="cliente">Cliente</option>
-    </select>
-    tipo de documento
-    <select name="tipo_documento">
-        <option value="dni">DNI</option>
-        <option value="passport">Pasaporte</option>
-    </select>
-    numero de documento
-    <input name="num_documento" />
-    direccion <input name="direccion" />
-    telefono<input name="telefono" />
-    email<input name="email" />
+    <div class="form-group">
+        <label>Nombre</label>
+        <input class="form-control" name="nombre" value="@Model.nombre" />
+        <span style="color:red">@Html.ValidationMessage("nombre")</span>
+    </div>
+
+    <div class="form-group">
+        <select name="tipo_persona">
+            <option value="proveedor">Proveedor</option>
+            <option value="cliente">Cliente</option>
+        </select>
+        <span style="color:red">@Html.ValidationMessage("tipo_persona")</span>
+    </div>
+    
+    <div class="form-group">
+        <select name="tipo_documento">
+            <option value="dni">DNI</option>
+            <option value="passport">Pasaporte</option>
+        </select>
+        <span style="color:red">@Html.ValidationMessage("tipo_documento")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Número de Documento</label>
+        <input class="form-control" name="num_documento" value="@Model.num_documento" />
+        <span style="color:red">@Html.ValidationMessage("num_documento")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Direccion</label>
+        <input class="form-control" name="direccion" value="@Model.direccion" />
+        <span style="color:red">@Html.ValidationMessage("direccion")</span>
+    </div>
+    
+    <div class="form-group">
+        <label>Telefono</label>
+        <input class="form-control" name="telefono" value="@Model.telefono" />
+        <span style="color:red">@Html.ValidationMessage("telefono")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" name="email" value="@Model.email" />
+        <span style="color:red">@Html.ValidationMessage("email")</span>
+    </div>
 
     <button>Enviar</button>
-
-
-
 </form>
 

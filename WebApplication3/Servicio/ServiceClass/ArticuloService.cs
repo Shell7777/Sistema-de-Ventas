@@ -19,7 +19,7 @@ namespace WebApplication3.Servicio
         }
         public List<Articulo> ArtsList()
         {
-            return context.Articulos.ToList();
+            return context.Articulos.Include(a=>a.categoria).ToList();
         }
         public Articulo FindArt(int? id) {
             if (id == null) { return null; }

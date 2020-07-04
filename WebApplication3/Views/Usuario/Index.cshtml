@@ -1,7 +1,54 @@
-﻿
+﻿@model IEnumerable<WebApplication3.Models.Clases.Usuario>
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Lista de trabajadores</h2>
 
+
+<table class="table table-bordered table-responsive-xl">
+    <tr class="bg-warning">
+        <th>Nombre</th>
+        <th>Puesto</th>
+        <th>DNI</th>
+        <th>Direccion</th>
+        <th>Teléfono</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.nombre)
+    </td>
+
+    <th>
+        @Html.DisplayFor(modelItem => item.roll.nombre)
+    </th>
+    <td>
+        @Html.DisplayFor(modelItem => item.num_documento)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.direccion)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.telefono)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.email)
+    </td>
+    <td>
+        @(item.condicion?"Activo":"Inactivo")
+    </td>
+    <td>
+        <a href="/Usuario/Edit?id=@item.id">Editar</a> |
+            
+            <a href="/Usuario/EstadoUsuario?id=@item.id">@(!item.condicion?"Contratar":"Despedir")</a>
+    </td>
+</tr>
+}
+
+</table>

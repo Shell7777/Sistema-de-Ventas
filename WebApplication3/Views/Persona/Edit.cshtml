@@ -1,0 +1,62 @@
+﻿@model WebApplication3.Models.Clases.Persona
+
+
+<h2>Editar una Persona </h2>
+
+<div class="row">
+
+    <div class="col form-group">
+        <label>Id</label>
+        <p>@Model.id</p>
+    </div>
+    <div class="col form-group">
+        <label>Nombre</label>
+        <p>@Model.nombre</p>
+    </div>
+    <div class="col form-group">
+        <label>Tipo de persona</label>
+        <p>@Model.tipo_persona</p>
+    </div>
+    <div class="col form-group">
+        <label>Tipo de documento</label>
+        <p>@Model.tipo_documento</p>
+    </div>
+    <div class="col form-group">
+        <label>Número de documento</label>
+        <p>@Model.num_documento</p>
+    </div>
+</div>
+<br />
+
+<form action="/Persona/Edit?id=@Model.id" method="post">
+
+    <div class="form-group">
+        <label>Nombre</label>
+        <input class="form-control" name="nombre" value="@Model.nombre" />
+        <span style="color:red">@Html.ValidationMessage("nombre")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Dirección</label>
+        <input class="form-control" name="nombre" value="@Model.direccion" />
+        <span style="color:red">@Html.ValidationMessage("direccion")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Telefono</label>
+        <input class="form-control" name="nombre" value="@Model.telefono" />
+        <span style="color:red">@Html.ValidationMessage("telefono")</span>
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" name="nombre" value="@Model.email" />
+        <span style="color:red">@Html.ValidationMessage("email")</span>
+    </div>
+
+    
+    <br />
+    <button class="btn btn-primary mb-lg-2">Enviar</button>
+
+    <a href="/Persona/Index" class="btn btn-danger mb-lg-2">Cancelar</a>
+</form>
