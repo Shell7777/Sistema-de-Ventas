@@ -15,6 +15,7 @@ namespace WebApplication3.Models.ClasesMap
             HasKey(a => a.id);
             Property(a => a.id).HasColumnName("idarticulo");
             HasRequired(a => a.categoria).WithMany(a => a.Articulos).HasForeignKey(a => a.idcategoria);
+           
         }
     }
 }

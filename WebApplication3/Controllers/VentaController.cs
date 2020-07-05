@@ -122,9 +122,6 @@ namespace WebApplication3.Controllers
                 ModelState.AddModelError("lista", "La lista está vacia");
                 
             }
-            
-            //if (venta.idcliente == null) ModelState.AddModelError("cliente", "Registre un cliente");
-           // if (venta.Usuario == null) ModelState.AddModelError("usuario", "Registre un cliente");
         }
     }
 }

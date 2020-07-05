@@ -80,7 +80,7 @@ namespace WebApplication3.Controllers
             if (id == null) return RedirectToAction("Index");
             var valor = service.CatFind(id);
             valor.condicion = !valor.condicion;
-            //service.SaveChanges();
+            service.SaveChanges();
 
             return RedirectToAction("Index");
         }

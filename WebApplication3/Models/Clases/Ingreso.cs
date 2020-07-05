@@ -14,7 +14,7 @@ namespace WebApplication3.Models.Clases
         public string serie_comprobante { get; set; }
         public string num_comprobante { get; set; }
         public DateTime fecha_hora { get; set; }
-        public decimal inpuesto { get; set; }
+        public decimal impuesto { get; set; }
         public decimal total { get; set; }
         public string estado { get; set; }
 

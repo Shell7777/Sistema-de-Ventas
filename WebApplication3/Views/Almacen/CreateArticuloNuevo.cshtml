@@ -1,0 +1,177 @@
+﻿
+
+@{
+    ViewBag.Title = "CreateArticuloNuevo";
+}
+
+<h2>Agregar Articulos Nuevos</h2>
+
+<div class="alert alert-light ">
+    <div class="row">
+        <div class="col-4">
+          
+            <div id="articuloDiv" class="alert alert-secondary">
+                <h5 style="text-align:center">Ingrese una articulo</h5>
+                Categoria
+                <select class="form-control" id="idcategoria" name="idcategoria">
+                    <option value="-1">---------------</option>
+                    @foreach (var cat in ViewBag.categoria)
+                    {
+                        <option value=@cat.id>@cat.nombre</option>
+                    }
+
+                </select>
+                <div class="form-group">
+                    Nombre
+                    <input id="nombre" class="form-control " name="nombre" type="text" />
+                </div>
+                <div class="form-group">
+                    Codigo
+                    <input id="codigo" class="form-control " name="codigo" type="text" />
+                </div>
+                <div class="form-group">
+
+                    Precio
+                    <input class="form-control" id="precio" name="precio" type="text" />
+                </div>
+                <div class="form-group">
+                    Cantidad
+                    <input class="form-control" id="cantidad" name="cantidad" type="text" />
+                </div>
+                <div>
+                    Descripcion
+                    <textarea class="form-control" id="descripcion">
+
+        </textarea>
+                </div>
+
+                <br />
+                <button class="btn btn-block btn-primary" onclick="agregarArticulo()">Agregar</button>
+            </div>
+        </div>
+        <div class="col-8">
+
+            <form class="alert alert-warning" action="/Almacen/CreateArticuloNuevo" method="post">
+                <div>
+                    <select name="idproveedor" class="form-control">
+                        @foreach (var prov in ViewBag.proveedor)
+                        {
+                            <option value=@prov.id>@prov.nombre </option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead class="bg-warning">
+                            <tr>
+                                <th style="width:60px">Articulo</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="app">
+                        </tbody>
+                    </table>
+                </div>
+                <button id="btn-send" style="visibility:hidden" class="btn btn-block btn-primary">Guardar</button>
+                <span>@Html.ValidationMessage("articulo")</span>
+            </form>
+        </div>
+       
+
+    </div>
+  
+
+</div>
+  
+<script>
+    
+    const articulosList = [];
+    let button = document.getElementById('btn-send');
+            
+    function agregarArticulo() {
+        let nombre = document.getElementById("nombre")
+        let codigo = document.getElementById("codigo")
+        let precio = document.getElementById("precio")
+        let cantidad = document.getElementById("cantidad")
+        let idcategoria = document.getElementById("idcategoria")
+        let descripcion = document.getElementById("descripcion")
+
+        if (idcategoria.options[idcategoria.selectedIndex].value == -1 ||nombre.value == ""||codigo.value == "" || precio.value == "" ||cantidad.value == "" ||descripcion.value == "")
+        {
+            alert("Rellene Todos los campos")
+        } 
+        else {
+
+            let articulo = new Object()
+            articulo.nombre = nombre.value
+            articulo.codigo = codigo.value
+            articulo.precio = parseFloat(precio.value)
+            articulo.cantidad = cantidad.value
+            articulo.idcategoria = idcategoria.options[idcategoria.selectedIndex].value
+            articulo.nombrecategoria = idcategoria.options[idcategoria.selectedIndex].text
+            articulo.descripcion = descripcion.value
+            articulosList.push(articulo)
+
+            nombre.value = ""
+            codigo.value = ""
+            precio.value = ""
+            cantidad.value = ""
+            descripcion.value = ""
+
+            agregarContenido()
+         
+        }
+       
+
+    }
+    function changeCountArticulo(index, aux, event) {
+        event.preventDefault();
+        switch (aux) {
+            case 1: articulosList[index].precio += 1; break;
+            case 2: articulosList[index].precio > 0 ? articulosList[index].precio -= 1 : articulosList[index].precio=0 ;    
+                    break;
+            case 3:articulosList.splice(index, 1)
+                console.log(articulosList);break;
+        }
+        agregarContenido();
+        
+        
+    }
+    function agregarContenido() {
+        let contenidoDiv = document.getElementById('app')
+        let contenido=""
+        articulosList.map(function (articulo, index) {
+            contenido+=
+                
+                
+                `
+                <tr>
+                    <td>${articulo.nombre}</td>
+                    <td>${articulo.precio}</td>
+                    <td>${articulo.cantidad}</td>
+                    <td>
+                        <a href="" onclick="(changeCountArticulo(${index},1,event))" style="colo:green" >Agregar</a>|
+                        <a href="" onclick="(changeCountArticulo(${index},2,event))" style="colo:yellow">Restar</a>|
+                        <a href="" onclick="(changeCountArticulo(${index},3,event))" style="color:red"  >X</a>
+                    </td>
+            
+                </tr>
+
+                <input hidden value="${articulo.nombre}" name="detalle_Ingresos[${index}].Articulo.nombre" />
+
+                <input hidden value="${articulo.codigo}" name="detalle_Ingresos[${index}].Articulo.codigo" />
+                <input hidden  value="${articulo.descripcion}" name="detalle_Ingresos[${index}].Articulo.descripcion" />
+                <input hidden  value="${articulo.precio}" name="detalle_Ingresos[${index}].precio" />
+                <input hidden  value="${articulo.cantidad}" name="detalle_Ingresos[${index}].cantidad" />
+                <input hidden  value="${articulo.idcategoria}" name="detalle_Ingresos[${index}].Articulo.idcategoria" />
+                
+                `
+        })
+        contenidoDiv.innerHTML = contenido
+        
+        button.style.visibility = articulosList.length <= 0 ? 'hidden' : 'visible'
+    }
+</script>

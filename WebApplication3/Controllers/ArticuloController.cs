@@ -130,14 +130,7 @@ namespace WebApplication3.Controllers
             {
                 ModelState.AddModelError("precioventa", "*Ingrese una precio valido");
             }
-            //if (articulo.stock == null || articulo.stock < 0)
-            //{
-            //    ModelState.AddModelError("codigo", "Ingrese un stock valido");
-            //}
-            //if (articulo.idcategoria == null || articulo.idcategoria < 0)
-            //{
-            //    ModelState.AddModelError("idcategoria", "Ingrese una categoria valida ");
-            //}
+            
         }
         
 

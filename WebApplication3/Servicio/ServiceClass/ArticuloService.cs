@@ -41,7 +41,7 @@ namespace WebApplication3.Servicio
         }
         public List<Articulo> ArtsListInlcudeCategoryEqualsName(string query) {
             if (String.IsNullOrEmpty(query)) return (new List<Articulo>());
-            return context.Articulos.Include(a => a.categoria).Where(a => a.nombre.Equals(query)).ToList();
+            return context.Articulos.Include(a => a.categoria).Where(a => a.nombre.Contains(query)).ToList();
         }
         public void SaveChanges() {
             context.SaveChanges();

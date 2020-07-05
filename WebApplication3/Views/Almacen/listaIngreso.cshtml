@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebApplication3.Models.Clases.Ingreso>
+
+@{
+    ViewBag.Title = "listaIngreso";
+}
+
+<h2>listaIngreso</h2>
+
+<table class=" table table-bordered table-responsive-xl">
+    <tr class="bg-warning">
+        <th>Proveedro</th>
+        <th>Trabajador</th>
+        <th>Fecha</th>
+        <th>IGV</th>
+        <th>Total</th>
+        <th>Estado</th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proveedor.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Usuario.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_hora)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.impuesto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.estado)
+        </td>
+        
+    </tr>
+}
+
+</table>

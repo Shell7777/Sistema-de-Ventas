@@ -14,6 +14,7 @@ namespace WebApplication3.Models.Clases
         public decimal precio { get; set; }
 
         public Ingreso Ingreso { get; set; }
+        public Articulo Articulo { get; set; }
 
     }
 }

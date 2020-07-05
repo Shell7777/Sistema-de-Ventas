@@ -14,6 +14,7 @@ namespace WebApplication3.Models.ClasesMap
             ToTable("Detalle_ingreso");
             HasKey(a => a.id);
             Property(a => a.id).HasColumnName("iddetalle_ingreso");
+            HasRequired(a => a.Articulo).WithMany(a => a.detalle_Ingresos).HasForeignKey(a => a.idarticulo);
         }
     }
 }

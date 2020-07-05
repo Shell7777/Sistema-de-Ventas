@@ -26,7 +26,7 @@ namespace WebApplication3.Servicio.ServiceClass
         }
         public List<Categoria> CatsListEqualsName(string query) {
             
-            return String.IsNullOrEmpty(query) ? new List<Categoria>():context.Categorias.Where(a => a.nombre.Equals(query)).ToList();
+            return String.IsNullOrEmpty(query) ? new List<Categoria>():context.Categorias.Where(a => a.nombre.Contains(query)).ToList();
         }
         public void CatDrop(int? id) {
             if (id != null || id > 0)
