@@ -15,18 +15,18 @@ namespace WebApplication3.Controllers
     {
         // GET: Almacen
 
-        
+
         Context contex = Context.GetContext();
         public ActionResult listaIngreso() {
-            var valor = contex.Ingresos.Include(a => a.detalle_Ingresos).Include(a=>a.Usuario).ToList();
+            var valor = contex.Ingresos.Include(a => a.Proveedor).Include(a => a.Usuario).ToList();
             return View(valor);
         }
         [HttpGet]
         public ActionResult CreateArticuloNuevo()
         {
             ViewBag.proveedor = contex.Personas.Where(a => a.tipo_persona == "1").ToList();
-            ViewBag.categoria = contex.Categorias.Where(a => a.condicion ).ToList();
-            return View(new Articulo ());
+            ViewBag.categoria = contex.Categorias.Where(a => a.condicion).ToList();
+            return View(new Articulo());
         }
         public bool SiesUnico(string nombre)
         {
@@ -39,16 +39,77 @@ namespace WebApplication3.Controllers
             validar_Ingreso(ingreso);
             if (ModelState.IsValid) {
                 contex.Ingresos.Add(ingreso);
-                 contex.SaveChanges();
+                contex.SaveChanges();
                 return RedirectToAction("listaIngreso");
             }
             ViewBag.proveedor = contex.Personas.Where(a => a.tipo_persona == "1").ToList();
             ViewBag.categoria = contex.Categorias.Where(a => a.condicion).ToList();
             return View(ingreso);
         }
-        public ActionResult Details(int id)
+        [HttpGet]
+        public ActionResult AgregarProducto()
         {
-            return View();
+            ViewBag.proveedor = contex.Personas.Where(a => a.tipo_persona == "1");
+            ViewBag.articulos = contex.Articulos.Where(a => a.condicion).ToList();
+            return View(new Ingreso());
+        }
+        [HttpPost]
+        public ActionResult AgregarProducto(Ingreso ingreso)
+        {
+            llenardatos_agregarProducto(ingreso);
+            validar_agregar_producto(ingreso);
+            
+            if (ModelState.IsValid) {
+                foreach (var detalle in ingreso.detalle_Ingresos) {
+                    var det = contex.Articulos.Where(a => a.id == detalle.idarticulo).FirstOrDefault();
+                    det.stock = detalle.cantidad;
+                }
+                contex.SaveChanges();
+                return RedirectToAction("listaIngreso");
+            }
+
+            ViewBag.proveedor = contex.Personas.Where(a => a.tipo_persona == "1");
+            ViewBag.articulos = contex.Articulos.Where(a => a.condicion).ToList();
+            return View(ingreso);
+        }
+        public void validar_agregar_producto(Ingreso ingreso)
+        {
+            if (String.IsNullOrEmpty(ingreso.tipo_comprobante))
+            {
+                ModelState.AddModelError("tipo_comprobante", "*Ingrese el tipo de comprobante");
+            }
+            if (String.IsNullOrEmpty(ingreso.num_comprobante))
+            {
+                ModelState.AddModelError("num_comprobante", "*Ingrese el numero de comprobante");
+            }
+            if (ingreso.idproveedor <= 0)
+            {
+                ModelState.AddModelError("idproveedor", "*Ingrese provedor");
+            }
+            if (ingreso.idusuario <= 0)
+            {
+                ModelState.AddModelError("idusuario", "*Debe Logiarse");
+            }
+            if (ingreso.detalle_Ingresos.Count <= 0 || ingreso.detalle_Ingresos == null)
+            {
+                ModelState.AddModelError("idusuario", "*Debe Logiarse");
+            }
+
+        }
+        public void llenardatos_agregarProducto(Ingreso ingreso) x{
+            ingreso.estado = "Activo";
+            ingreso.idusuario = 1;
+            decimal total = 0;
+            ingreso.num_comprobante = "00484";
+            ingreso.serie_comprobante = "45DSD3";
+            ingreso.tipo_comprobante = "Codigo de barras";
+            ingreso.fecha_hora = DateTime.Now;
+            foreach (var detalle in ingreso.detalle_Ingresos)
+            {
+                total = total + (detalle.precio * ((decimal)detalle.cantidad));
+            }
+            ingreso.total = total;
+            ingreso.impuesto = total * (decimal)0.15;
         }
         public void validar_Ingreso(Ingreso  ingreso)
         {
@@ -84,7 +145,7 @@ namespace WebApplication3.Controllers
         }
         public void llenarDatos(Ingreso ingreso) {
             ingreso.estado = "Activo"  ;
-            ingreso.idusuario = 1;
+            ingreso.idusuario = 1 ;
             decimal total = 0;
             ingreso.num_comprobante = "00484";
             ingreso.serie_comprobante = "45DSD3";

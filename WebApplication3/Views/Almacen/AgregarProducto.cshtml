@@ -1,0 +1,160 @@
+﻿@model  WebApplication3.Models.Clases.Ingreso
+@{
+    ViewBag.Title = "AgregarProducto";
+}
+
+<div class="row">
+    <div class="col">
+
+        <h2>Ingresos</h2>
+        <form action="/Almacen/AgregarProducto" method="post">
+
+            <div class="alert alert-secondary">
+                <label>Usuario:</label>
+                <div class="row">
+                    <div class="col">
+                        <label>Proveedor </label>
+                        <select name="idproveedor" class="form-control">
+                            <option value="">-----------</option>
+                            @foreach (var item in ViewBag.proveedor) {
+                        <option @(Model.idproveedor == item.id ? "selected" : "") value="@item.id">@item.nombre</option>  
+                            }
+                         </select>
+                        <label style="color:red">@Html.ValidationMessage("idproveedor")</label>
+                    </div>
+              
+                </div>
+                <div id="request-store-products" class="container ">
+                    <label>Usted no agrego nada </label>
+
+                    <label style="color:red">@Html.ValidationMessage("lista")</label>
+                </div>
+
+                <button class="btn btn-primary  btn-lg  " name="enviar">Enviar</button>
+            </div>
+        </form>
+
+    </div>
+    <div class="col">
+
+        <h2>Lista de Productos</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Nombre</td>
+                    <td>Precio</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.articulos)
+                {
+                    <tr>
+                        <td>@item.nombre</td>
+                        <td><button id="@item.id" data-nombre="@item.nombre"  class="add btn btn-warning ">Agregar </button></td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<div style="background-color:teal; width:100px" ;height="100px"></div>
+<hr />
+
+
+<script>
+
+    let products = []
+
+    function add_Div(products) {
+
+        let valorHtml = "";
+        for (let item=0; item < products.length ; item++) {
+
+            valorHtml += `
+            <div class="alert alert-primary row ">
+                <div class="col col-3">
+                    <span>${products[item].nombre}</span>
+                </div>
+                <div class="col col-3">
+                    <a  onclick="add_productos_of_List(${item})" > + </a>
+                    <label>${products[item].cantidad}</label>
+                    <a class="btn btn-link" onclick="substrackting_productos_of_List(${item})"> - </a>
+                </div>
+                <div class="col col-3">
+                    
+                    <input placeholder="Precio" onkeyup="agregarvalor(${item})" id="precio-${item}" value="${products[item].precio}" name="detalle_Ingresos[${item}].precio" size=5  />
+               </div>
+
+                <div class="col col-3">
+                    <a class="btn btn btn-danger text-white" onclick="delete_productos_of_List  (${item})"> Eliminar </a>
+                    <input hidden name="detalle_Ingresos[${item}].idarticulo" value="${products[item].id}" />
+                    <input hidden name="detalle_Ingresos[${item}].cantidad" value="${products[item].cantidad}" />
+                </div>
+            </div>`
+
+        }
+        $("#request-store-products").html(valorHtml)
+
+
+    }
+    function agregarvalor(index) {
+         
+        let valor = document.getElementById(`precio-${index}`).value
+        products[index].precio = valor
+        console.log(valor)    
+        
+    }
+
+    function substrackting_productos_of_List(numero_de_orden_del_array) {
+        products[numero_de_orden_del_array].cantidad > 0
+            ? products[numero_de_orden_del_array].cantidad -= 1
+            : products[numero_de_orden_del_array].cantidad = 0
+
+        add_Div(products);
+
+    }
+    function add_productos_of_List(numero_de_orden_del_array) {
+        products[numero_de_orden_del_array].cantidad += 1
+        add_Div(products);
+     }
+    function delete_productos_of_List(numero_de_orden_del_array) {
+        products.splice(numero_de_orden_del_array, 1);
+        add_Div(products);
+    }
+    function verificar(id,name,max_count) {
+            var existe = false
+            for (let item of products) {
+                if (id == item.id) {
+                    existe = true
+                    item.cantidad++
+                   // if (item.stock > item.cantidad) item.cantidad++
+                }
+            }
+            if (!existe) {
+
+                products.push(
+                    {
+                        id: id,
+                        nombre: name, precio: 1, cantidad: 1
+
+                    }
+                )
+            }
+
+
+    }
+
+    $(".add").click(function () {
+            let nombre = ($(this).attr("data-nombre"))
+            let id = $(this).attr("id")
+            verificar(id, nombre)
+              add_Div(products)
+          })
+
+</script>
+
+
