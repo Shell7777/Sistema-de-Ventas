@@ -62,8 +62,9 @@ namespace WebApplication3.Controllers
             if (ModelState.IsValid) {
                 foreach (var detalle in ingreso.detalle_Ingresos) {
                     var det = contex.Articulos.Where(a => a.id == detalle.idarticulo).FirstOrDefault();
-                    det.stock = detalle.cantidad;
+                    det.stock += detalle.cantidad;
                 }
+                contex.Ingresos.Add(ingreso);
                 contex.SaveChanges();
                 return RedirectToAction("listaIngreso");
             }
@@ -96,7 +97,7 @@ namespace WebApplication3.Controllers
             }
 
         }
-        public void llenardatos_agregarProducto(Ingreso ingreso) x{
+        public void llenardatos_agregarProducto(Ingreso ingreso) {
             ingreso.estado = "Activo";
             ingreso.idusuario = 1;
             decimal total = 0;
