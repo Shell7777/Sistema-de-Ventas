@@ -1,0 +1,92 @@
+﻿@model WebApplication3.Models.Clases.Persona
+
+@{
+    ViewBag.Title = "DetailsProveedor";
+}
+
+<h2>DetailsProveedor</h2>
+
+<div>
+    <h4>Persona</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Nombre
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+           <dt>Tipo de documento
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tipo_documento)
+        </dd>
+
+        <dt>Numero de docuemnto</dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.num_documento)
+        </dd>
+
+        <dt>Dirección</dt>
+        <dd>
+            @Html.DisplayFor(model => model.direccion)
+        </dd>
+
+        <dt>Teléfono</dt>
+        <dd>
+            @Html.DisplayFor(model => model.telefono)
+        </dd>
+
+        <dt>Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+    </dl>
+</div>
+<hr />
+<table class="table table-bordered table-responsive-xl">
+    
+    <tr class="bg-warning">
+        <th>Fecha y hora </th>
+        <th>Impuesto (IGV)</td>
+        <th>Total</th>
+        <th>Estado</th>
+        <th></th>
+    </tr>
+ 
+    <tbody>
+        @foreach (var item in Model.Ingresos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fecha_hora)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.impuesto)
+                </td>
+             
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.estado)
+                </td>
+                <td>
+                    <a href="/almacen/DetailsdeIngresos?id=@item.id">Detalles</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<p>
+    @Html.ActionLink("Back to List", "BuscarProveedor")
+</p>

@@ -1,0 +1,77 @@
+﻿@model WebApplication3.Models.Clases.Persona
+
+@{
+    ViewBag.Title = "CreateProveedor";
+}
+
+<h2>Crear un nuevo proveedor</h2>
+
+<form method="post" action="/Almacen/CreateProveedor">
+
+    <div class="form-horizontal">
+        <h4>Persona</h4>
+        <hr />
+     
+        <div class="form-group">
+            Nombre
+            <div class="col-md-10">
+                <input class="form-control" placeholder="nombre" name="nombre" value="@Model.nombre"/>
+                <strong style="color:red"> @Html.ValidationMessage("nombre")</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <select class="custom-select" name="tipo_documento" >
+                    <option @(Model.tipo_documento==""? "selected":"" ) value="">--------------</option>
+                    <option @(Model.tipo_documento=="DNI"? "selected":"" ) value="DNI">DNI</option>
+                    <option @(Model.tipo_documento=="RUC"? "selected":"" ) value="RUC">RUC</option>
+                </select>
+               
+                <strong style="color:red"> @Html.ValidationMessage("tipo_documento")</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <input class="form-control" name="num_documento" placeholder="Ingrese el numero de su documento" value="@Model.num_documento" />
+                <strong style="color:red"> @Html.ValidationMessage("num_documento")</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <input class="form-control" placeholder="Ingrese su direccion" value="@Model.direccion"  name="direccion" />
+                <strong style="color:red">  @Html.ValidationMessage("direccion")</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <input class="form-control" placeholder="Ingrese el numero de su teléfono" value="@Model.telefono" name="telefono" />
+                <strong style="color:red">  @Html.ValidationMessage("telefono")</strong>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <input class="form-control"  name="email" placeholder="Ingrese su emails" value="@Model.email"   />
+                <strong style="color:red"> @Html.ValidationMessage("email") </strong>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <button class="btn btn-primary" >Enviar</button>
+        </div>
+    </div>
+</form>
+
+<div>
+    @Html.ActionLink("Back to List", "BuscarProveedor")
+</div>

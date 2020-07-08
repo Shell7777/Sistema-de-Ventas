@@ -1,0 +1,39 @@
+﻿@model WebApplication3.Models.Clases.Detalle_Ingreso
+
+@{
+    ViewBag.Title = "DetailsdeIngresos";
+}
+
+<h2>DetailsdeIngresos</h2>
+
+<div>
+    <h4>Detalle_Ingreso</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        
+        <dt>Articulo</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Articulo.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cantidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cantidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precio)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a href="DetailsProveedor?id=@ViewBag.idProveedor">Regresar atras </a>
+</p>

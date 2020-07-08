@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - StoreCax</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -19,9 +19,10 @@
 <body style="padding-top:0px">
     
     <div class="row">
-        <div class="col-2" style="padding-right:0px; background:#079992 ;padding-bottom:350px ">
-            <img style="margin-left:70px" src="~/Sources/Icons/icon-soporte.png" />
-            <h4 class="text-white" style="text-align:center;">MÓDULO DEL ADMIN</h4>
+        <div class="col-2" style="padding-right:0px; background:#c0392b ;padding-bottom:350px ">
+            <img onclick="refreshhome()" style="margin-left:70px" src="~/Sources/Icons/icon-soporte.png" />
+            <h4  class="text-white" style="text-align:center;">MÓDULO DEL ADMIN</h4>
+      
             <div class="btn-group-vertical" style="font-size:20px;" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" style="margin-right:69px" role="group">
                     <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,8 +54,8 @@
                         <a class="dropdown-item" href="/Almacen/listaIngreso">Ver Ingresos</a>
                         <a class="dropdown-item" href="/Almacen/CreateArticuloNuevo">Registrar Nuevo Producto</a>
                         <a class="dropdown-item" href="/Almacen/AgregarProducto">Agregar Producto Exitente</a>
-                        <a class="dropdown-item" href="#">Registrar Nuevo Proveedor</a>
-                        <a class="dropdown-item" href="#">Ver Proveedor </a>
+                        <a class="dropdown-item" href="/Almacen/CreateProveedor">Registrar Nuevo Proveedor</a>
+                        <a class="dropdown-item" href="/Almacen/BuscarProveedor">Ver Proveedor </a>
                         
 
                     </div>
@@ -91,6 +92,11 @@
 
     </div>
     
-    
+    <script>
+        function refreshhome() {
+            location.href = "/Home/Index";
+        }
+    </script>
 </body>
 </html>
+

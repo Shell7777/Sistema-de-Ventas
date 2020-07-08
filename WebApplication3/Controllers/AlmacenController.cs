@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication3.Models;
@@ -46,6 +47,36 @@ namespace WebApplication3.Controllers
             ViewBag.categoria = contex.Categorias.Where(a => a.condicion).ToList();
             return View(ingreso);
         }
+        public ActionResult BuscarProveedor(string query)
+        {
+            ViewBag.query = query;
+            if (String.IsNullOrWhiteSpace(query) || String.IsNullOrEmpty(query))
+            {
+                return View(contex.Personas.Where(a => a.tipo_persona == "1").ToList());
+            }
+            return View(contex.Personas.Where(a => a.tipo_persona == "1" && a.nombre.Contains(query)).ToList());
+        }
+        public ActionResult DetailsProveedor(int? id)
+        {
+            if (id == null) return RedirectToAction("buscarProveedor");
+            var ingresos = contex.Personas.Include(a=>a.Ingresos).Where(a => a.id == id).FirstOrDefault();
+            if (ingresos == null) return RedirectToAction("buscarProveedor");
+
+            return View(ingresos);
+        }
+        public ActionResult DetailsdeIngresos(int? id)
+        {
+            if (id == null) return RedirectToAction("buscarProveedor");
+            var ingresos = contex.Detalle_Ingresos.Include(a=>a.Ingreso).Include(a => a.Articulo).Where(a => a.Ingreso.id == id).FirstOrDefault();
+            if (ingresos == null) return RedirectToAction("buscarProveedor");
+            ViewBag.idProveedor = ingresos.Ingreso.idproveedor;
+            return View(ingresos);
+        }
+        public ActionResult DeleteProveedor(int? id ) {
+            if (id != null) contex.Personas.Remove(contex.Personas.Find(id));
+            return RedirectToAction("BuscarProveedor");
+        
+        }
         [HttpGet]
         public ActionResult AgregarProducto()
         {
@@ -73,6 +104,53 @@ namespace WebApplication3.Controllers
             ViewBag.articulos = contex.Articulos.Where(a => a.condicion).ToList();
             return View(ingreso);
         }
+        [HttpGet]
+        public ActionResult CreateProveedor()
+        {
+            return View(new Persona()   );
+        }
+        [HttpPost]
+        public ActionResult CreateProveedor(Persona proveedor)
+        {
+            validar_Proveedor(proveedor);
+            if (ModelState.IsValid)
+            {
+                proveedor.tipo_persona = "1";
+                contex.Personas.Add(proveedor);
+                contex.SaveChanges();
+                return RedirectToAction("BuscarProveedor");
+            }
+            return View(proveedor);
+        }
+        public void validar_Proveedor(Persona proveedor)
+        {
+            if (String.IsNullOrEmpty(proveedor.nombre))
+            {
+                ModelState.AddModelError("nombre", "*Ingrese el campo");
+            }
+            if (String.IsNullOrEmpty(proveedor.direccion))
+            {
+                ModelState.AddModelError("direccion", "*Ingrese el campo");
+            }
+
+            if (String.IsNullOrEmpty(proveedor.email) || !validarEmail(proveedor.email))
+            {
+                ModelState.AddModelError("email", "*Ingrese el campo");
+            }
+            if (String.IsNullOrEmpty(proveedor.telefono) || proveedor.telefono.Length != 9)
+            {
+                ModelState.AddModelError("telefono", "*Ingrese el campo");
+            }
+            if (String.IsNullOrEmpty(proveedor.num_documento))
+            {
+                ModelState.AddModelError("num_documento", "*Ingrese el campo");
+            }
+            if (String.IsNullOrEmpty(proveedor.tipo_documento))
+            {
+                ModelState.AddModelError("tipo_documento", "*Ingrese el campo");
+            }
+
+        }
         public void validar_agregar_producto(Ingreso ingreso)
         {
             if (String.IsNullOrEmpty(ingreso.tipo_comprobante))
@@ -96,6 +174,11 @@ namespace WebApplication3.Controllers
                 ModelState.AddModelError("idusuario", "*Debe Logiarse");
             }
 
+        }
+        public static bool validarEmail(string email)
+        {
+            String expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            return Regex.IsMatch(email, expresion);
         }
         public void llenardatos_agregarProducto(Ingreso ingreso) {
             ingreso.estado = "Activo";

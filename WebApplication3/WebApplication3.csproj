@@ -348,6 +348,10 @@
     <Content Include="Views\Almacen\CreateArticuloNuevo.cshtml" />
     <Content Include="Views\Almacen\listaIngreso.cshtml" />
     <Content Include="Views\Almacen\AgregarProducto.cshtml" />
+    <Content Include="Views\Almacen\CreateProveedor.cshtml" />
+    <Content Include="Views\Almacen\BuscarProveedor.cshtml" />
+    <Content Include="Views\Almacen\DetailsProveedor.cshtml" />
+    <Content Include="Views\Almacen\DetailsdeIngresos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

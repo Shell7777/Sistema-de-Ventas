@@ -7,6 +7,10 @@ namespace WebApplication3.Models.Clases
 {
     public class Ingreso
     {
+        public Ingreso()
+        {
+            detalle_Ingresos = new List<Detalle_Ingreso>();
+        }
         public int id { get; set; }
         public int idproveedor { get; set; }
         public int idusuario { get; set; }

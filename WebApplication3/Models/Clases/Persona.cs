@@ -7,6 +7,10 @@ namespace WebApplication3.Models.Clases
 {
     public class Persona
     {
+        public Persona()
+        {
+            Ingresos = new List<Ingreso>();
+        }
         public int id { get; set; }
         public string nombre { get; set; }
         public string tipo_persona {get;set;}
